@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+			}
+			body{
+				background-color: antiquewhite;
+			}
+			#container{
+				position: relative;
+				width: 500px;
+				height: 700px;
+				margin: 0px auto;
+				margin-top: 100px ;
+				/* background-color: red; */
+			}
+		 	#content_img{
+				height: 80%;
+			} 
+			#content_img ul{
+				position: relative;
+				width: 500px;
+				height: 700px;
+				list-style: none;
+			}
+			#content_img li{
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				transition: all 0.5s;
+			}
+			li img{
+				width: 500px;
+				height: 600px;
+			}
+			.img1 {
+				z-index: 10;
+			}
+			.bar{
+				border: 1px sloid black;
+				position: absolute;
+				left: 40%;
+				bottom: 20px;
+				text-align: center;
+			}
+			.bar li{
+				display: inline-block;
+				list-style: none;
+				padding: 6px;
+				border: 1px solid black;
+				opacity: 0.6;
+				cursor: pointer;
+			}
+			ol li:nth-child(1){
+				background-color: orange;
+			}
+			.btn{
+				position: absolute;
+				top: 46%;
+				height: 50px;
+				width: 50px;
+				background-color: #000000;
+				opacity: 0.6;
+				z-index: 10;
+				font-size: 35px;
+				line-height: 45px;
+				color: white;
+				text-align: center;
+				cursor: pointer;
+			}
+			#btn-left{
+				left: 0px;
+			}
+			#btn-right{
+				right: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="content_img">
+				<ul>
+					<li class="img1"><img src="img/006TVPzNgy1g3y4lc6cl1j30rs15oh2e.jpg" /></li>
+					<li class="img2"><img src="img/006TVPzNly1g3cqj5ei0yj30u014047r.jpg" /></li>
+					<li class="img3"><img src="img/LOVE.jpg" /></li>
+					<li class="img4"><img src="img/qr.jpg" /></li>
+					<li class="img5"><img src="img/qt.jpeg" /></li>
+				</ul>
+			</div>
+			<div class="bar">
+				<ol>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+				</ol>
+			</div>
+			<div id="btn-left" class="btn">
+				&lt;
+			</div>
+			<div id="btn-right" class="btn">
+				&gt;
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">		
+		window.onload=function(){
+			var img_list=document.querySelectorAll("#content_img li");
+			var bar_list=document.querySelectorAll(".bar li");
+			var btnL=document.getElementById("btn-left");
+			var btnR=document.getElementById("btn-right");
+			var index=0;
+			btnL.addEventListener('mouseover',()=>{
+				console.log('取消自动循环...');
+				clearInterval(active);
+			})
+			btnR.addEventListener('mouseover',()=>{
+				console.log('取消自动循环...');
+				clearInterval(active);
+			})
+			btnL.addEventListener('mouseout',()=>{
+				console.log('开启自动循环...');
+				active = setInterval(change_img_R,1500);
+			})
+			btnR.addEventListener('mouseout',()=>{
+				console.log('开启自动循环...');
+				active = setInterval(change_img_R,1500);
+			})
+			
+			//图片右移
+			var active = setInterval(change_img_R,1500);
+		
+			
+			function change_img_R(){
+				//img_list[2].style.zIndex=10;
+				for(var i=0;i<img_list.length;i++){
+					img_list[i].style.zIndex=1;
+					bar_list[i].style.backgroundColor="white"
+				}
+				index=(++index)%img_list.length;
+				//console.log(index);
+				img_list[index].style.zIndex=10;
+				bar_list[index].style.backgroundColor="orange";
+				//setTimeout(change_img_R,1000);
+				// setTimeout("change_img_R()",2500);
+			}
+			//change_img_R();
+			//图片左移
+			function change_img_L(){
+				//img_list[2].style.zIndex=10;
+				for(var i=0;i<img_list.length;i++){
+					img_list[i].style.zIndex=1;
+					bar_list[i].style.backgroundColor="white"
+				}
+				index--;
+				if(index<0)
+				{
+					index=4;
+				}
+				img_list[index].style.zIndex=10;
+				bar_list[index].style.backgroundColor="orange";
+			}
+			//change_img();
+			btnL.onclick=function(){
+				change_img_L();
+			}
+			btnR.addEventListener("click",change_img_R);//调用change_img_R方法
+		}
+		
+	</script>
+</html>

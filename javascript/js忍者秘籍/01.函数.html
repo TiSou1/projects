@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="module">
+        import assert from './js/assert.js';
+        /* 函数时第一类对象
+            ● 回调函数在哪种情况下会同步调用，或者异步调用呢？
+            ● 箭头函数和函数表达式的区别是什么？
+            ● 你为什么需要在函数中使用默认参数？ 
+            
+        */
+       /*   js中对象以下常用功能
+            - 对象通过字面量创建
+            - 对象可以赋值给变量,数组项,或其他对象的属性 */
+        var ninja = {};//为变量赋值一个新对象
+        let ninjaArray = [];
+        ninjaArray.push({});//向数组中添加一个对象
+        ninja.data = {};//为对象的属性赋值一个新的对象
+
+        // 对象可以作为参数传递给函数
+        //对象可以作为函数的返回值。
+        //对象能够具有动态创建和分配的属性。
+
+        /* 函数最为第一类对象也具有以上功能那个 */
+
+
+        /* **********************回调函数 */
+        function useless(ninjaCallback){
+            return ninjaCallback();
+        }
+        
+        document.body.addEventListener('mousemove',function(){
+            ;
+        })
+
+        //sort函数
+        /* 如果传入值的顺序需要被调换，返回正数；不需要调换，返回负数；两个值相等，返回0。 */
+        let  a1 = [1,56,8,12,0,23];
+        a1.sort(function(v1,v2){
+         //   console.log(v1,v2);
+            return v1 - v2;
+        })
+        console.log(a1)
+
+
+
+        /* 为函数添加属性 */
+        const wield  = function (){};
+        wield.sword = 'kataka';//为函数添加属性
+
+        //例:存储唯一函数集合
+        const store = {
+            nextId:1,//跟踪下一个被复制的函数
+            cache:{},//使用对象最为缓存,存储函数
+            add(fn){//新写法
+                if(!fn.id){
+                    fn.id = this.nextId++;
+                    this.cache[fn.id] = fn;
+                    return true;
+                }
+            }
+        }
+        function ninja1(){}
+        assert(store.add(ninja1),'Function was safely added.');
+        assert(store.add(ninja1),'BUt it was only added once.');
+
+        /* 自记忆函数 */
+        //例:计算先前得到的值
+        function isPrime(value){
+            if(!isPrime.answers){
+                //创建缓存
+                isPrime.answers = {};
+            }
+            if(isPrime.answers[value] !== undefined){
+                //检查缓存的值
+                return isPrime.answers[value];
+            }
+            let prime = value !== 0 && value !== 1//1不是素数
+            for(let i = 2; i < value ;i++){
+                //素数判断
+                if(value % i === 0){
+                    prime = false;
+                    break;
+                }
+            }
+            //存储计算的值
+            return isPrime.answers[value] = prime;
+        }
+        assert(isPrime(5),'5 is prime');
+        assert(isPrime.answers[5],'the asnwer was cached');
+
+
+        /* 函数定义 
+            js提供了几种定义函数的方式,可以分为4类*/
+        //1.函数定义(function declartions)和函数表达式(function expressions)最常用
+        function myFun1(){return 1;}//函数声明
+        const fn = function (){return 2};//函数表达式,右边函数名可省略
+        //return function(){}   函数表达式
+
+        //立即函数
+        //为函数添加()的目的是不让编译器将它识别为函数声明,而是函数表达式
+        (function(){console.log('我是立即函数')})();
+        +function(){console.log('我是立即函数 + ')}();
+        //前面添加 + - ! ~都行
+
+
+
+        //2.箭头函数(lambda函数)
+        const myFun2 = value => value*2;
+        
+
+
+        //3.函数构造函数,不常用,能让我们以字符串形式动态构造一个函数
+        const myFun3 = new Function('a','b','return a+b');
+
+        //4.生成器函数(Generation函数),ES6新增
+        function* myFun4(){yield 1;};
+
+    </script>
+</body>
+</html>

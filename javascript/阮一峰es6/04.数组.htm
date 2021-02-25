@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //***********************解构****************************
+        //es5
+       function f(x, y, z){
+           ;
+       }
+       var args = [1,2,3]
+       f.apply(null, args)
+       //es6
+       function f1(x,y,z){
+           ;
+       }
+
+       let args1 = [1,2,3]
+       f(...args1);
+
+
+       //(************求最大值
+       //es5
+       Math.max.apply(null, [14,3,77])
+       //es6
+       Math.max(...[1,2,3])
+       
+
+
+
+       //**********数组连接
+       //es5
+       let arr1 = [1,2,3,4]
+       let arr2 = [2,3,4,5]
+       Array.prototype.push.apply(arr1, arr2)
+
+       //es6
+       arr1.push(...arr2)
+
+       
+       //***************复制数组
+
+
+       const a1 = [1,2]
+       //es5
+       const a2 = a1.concat();
+       //es6
+    //    a2 = [...a1]或者 [...a2] = a1
+       a2[0] = 0;
+       console.log(a1[0]);
+
+
+
+       //********合并数组
+
+       let s1 = ['a','b']
+       let s2 = ['c','d']
+      // console.log(s2.concat(s1))      
+       //es6
+       let s3 = [...s1,...s2]
+       console.log([...s1,...s2])
+       s1[0] = 1;
+       console.log(s3);
+       //以上均为浅拷贝
+
+       //**********
+       let list = [2,3,4,5]
+       let [v,...rest] = list
+
+
+       let map = new Map([
+           [1,'one'],
+           [2,'two'],
+           [3,'three'],
+       ])
+       let arr = [...map.keys()]
+       console.log(arr)
+
+
+       //*******Array.from()
+       //将两类对象转换为真正的数组
+       let arrayLike = {
+           '0':'a',
+           '1':'b',
+           '2':'c',
+           length:3,
+       }
+       //es5写法
+       var ar1 = [].slice.call(arrayLike);
+       //es6写法
+       let ar2 = Array.from(arrayLike)
+       console.log(ar1,ar2);
+
+       //NodeList对象节点 也可以进行转化
+
+       //arguments对象
+       function ff(){
+           var args = Array.from(arguments);
+       }
+
+       //接收的第二个参数为一个回调,进行每一项的操作 
+       //类似数组中的map方法
+       Array.from([1,2,3],(item,index)=>{
+           console.log(item,index)
+       })
+
+       let cc = Array.from({length:2},()=>'jack')
+       console.log(cc);
+
+
+
+       //**************Array.of（）初始化数组
+       console.log(Array.of(1,2,3))
+       //效果比 new Array()好用
+
+
+
+       //********find方法和findIndex方法
+       //比indexOf()好用点
+      console.log( [1,2,NaN,22].indexOf(NaN))
+      console.log( [1,2,NaN,22].findIndex((n) => n === NaN))
+
+
+      //******includes()
+      console.log([1,2,NaN].includes(NaN))
+      //indexOF查找时,用的是严格相等(===)在查找NaN时,会忽略
+
+
+
+
+      //*8***********flat(),,flatMap()
+      //用于将嵌套在数组中的数组展开,默认参数为1,表示要展开的层数
+      //可直接将参数设为Infinity即展开完
+       console.log([1,[2,3]].flat(1))
+
+       //flatMAp()相当于Array.prototype.map(),只能展开一层
+        //    [2, 3, 4].flatMap((x) => [x, x * 2])
+       console.log([2, 3, 4].flatMap((x) => [x, x * 2]))
+       console.log([1, 2, 3, 4].flatMap(x => [[x * 2]]))
+        // [[2], [4], [6], [8]])
+
+
+
+        //*********数组空位
+
+        let  xx = new Array(3)
+        console.log(xx);
+//         forEach(), filter(), reduce(), every() 和some()都会跳过空位。
+// map()会跳过空位，但会保留这个值
+// join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串。
+
+       //Array.from方法会将数组的空位，转为undefined
+       //扩展运算符（...）也会将空位转为undefined。
+        let zz = Array.from(xx)
+        console.log(zz)
+</script>
+
+
+</body>
+</html>

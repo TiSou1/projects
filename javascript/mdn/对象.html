@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var myCar = new Object();
+			myCar.make = "Ford";
+			myCar.model = "Mustang";
+			myCar.year = 1969; 
+			
+			//1枚举
+			for(item in myCar)
+				console.log(item);
+			//2
+			console.log(Object(myCar));
+			
+			//3
+			console.log(Object.getOwnPropertyNames(myCar));
+			//4手写
+			function listAllProperties(o){
+				var objectToInspect;
+				var result = [];
+			
+				for(objectToInspect = o; objectToInspect !== null; objectToInspect = Object.getPrototypeOf(objectToInspect)){
+					result = result.concat(Object.getOwnPropertyNames(objectToInspect));
+				}			
+				return result;
+			}
+
+			console.log(listAllProperties(myCar));
+			
+			
+			//直接直面对象
+			let m = {
+				make :"Ford",
+				model : "Mustang",
+				year : 1969,
+			}	
+			console.log(m);
+			function displayCar(){
+				console.log(this);
+			}
+			//构造函数
+			function Car(make, model, year){
+				this.make = make;
+				this.model = model;
+				this.year = year;
+				this.displayCar = displayCar;
+			}
+			Car.prototype.color = null;
+			
+			let m1 = new Car('1','2','3');
+			let m2 = new Car('a','b','c');
+			m1.displayCar();
+			m1.color = 'red';
+			m2.color = 'blue';
+			console.log(m1,m2);
+			
+			//使用Object.create();因为它允许你为创建的对象选择一个原型对象(Animal)，而不用定义构造函数。
+			// Animal properties and method encapsulation
+			var Animal = {
+			  type: "Invertebrates", // 属性默认值
+			  displayType : function() {  // 用于显示type属性的方法
+			    console.log(this.type);
+			  }
+			}
+			
+			// 创建一种新的动物——animal1
+			var animal1 = Object.create(Animal);	
+			animal1.displayType(); // Output:Invertebrates
+			
+			// 创建一种新的动物——Fishes
+			var fish = Object.create(Animal);
+			fish.type = "Fishes";
+			fish.displayType(); // Output:Fishes
+
+			//所有的 JavaScript 对象至少继承于一个对象。被继承的对象被称作原型，
+			//并且继承的属性可通过构造函数的 prototype 对象找到。
+			
+			
+			
+			//定义方法
+			// objectName.methodname(方法名) = function_name;
+			
+			// var myObj = {
+			//   myMethod: function(params) {
+			//     // ...do something
+			//   }
+			
+			//   // 或者 这样写也可以
+			
+			//   myOtherMethod(params) {
+			//     // ...do something else
+			//   }
+			// };
+			// function Car(make, model, year, owner) {
+			//   this.make = make;
+			//   this.model = model;
+			//   this.year = year;
+			//   this.owner = owner;
+			//   this.displayCar = displayCar;(displayCar方法)
+			// }
+
+			function Employee () {
+			  this.name = "";
+			  this.dept = "general";
+			}
+			
+			console.log(Employee.prototype);
+			
+			var f = new Foo();
+			var isTrue = (f instanceof Foo);
+			console.log(isTrue);
+		</script>
+	</body>
+</html>

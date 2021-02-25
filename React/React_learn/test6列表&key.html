@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		<script type="text/babel">
+			/*function NumberList(props) {
+				//原素组
+				const numbers  = props.numbers;
+				//数组值放入<li>的集合
+				const listItems = numbers.map((number,index) =>
+				<li key={number.toString()}>{number}</li>
+				);
+				return (
+				<ul>{listItems}</ul>
+				);
+			}
+			const numbers = [1,2,3,4,5];
+			ReactDOM.render(
+			<NumberList numbers={numbers} />,
+			document.getElementById("root")
+			);
+			*/
+			
+			function ListItem(props){
+				
+				return <li>{props.value}</li>
+			}
+			function NumberList(props){
+				const numbers = props.numbers;
+				{/*一个好的经验法则是：在 map() 方法中的元素需要设置 key 属性。
+				提取组件ListItem*/}
+				return (
+				<ul>
+					{numbers.map((number) => 
+				<ListItem key={number.toString()}
+				value={number}/>
+				)}
+				</ul>
+				);
+			}
+			const numbers = [1,2,3,4,5];
+			ReactDOM.render(
+			<NumberList numbers={numbers}/>,
+			document.getElementById("root")
+			);
+			
+			
+			function Person(props) {
+				return (
+					<ul>
+						<li>姓名:{props.name}</li>
+						<li>姓名:{props.age}</li>
+						<li>姓名:{props.sex}</li>
+					</ul>
+				);
+			}
+			//设置默认值
+			Person.defaultProps = {
+				age: 18,
+				sex: "女"
+			}
+			//设置约束条件
+			/*Person.propTypes = {
+				name: PropTypes.string.isRequired,
+				age: PropTypes.number
+			}需引入包*/
+			const p1 = {
+				name: "Siry",
+				age: 20,
+				sex: "男"
+			}
+			
+			
+			class Person1 extends React.Component{
+				
+				render(){
+					return (
+						<ul>
+							<li>{this.props.name}</li>
+							<li>{this.props.age}</li>
+							<li>{this.props.sex}</li>
+						</ul>
+					);
+				}
+			}
+			const p2 = {
+				name: "TiSou1",
+				age: 22,
+				sex: "nv"
+			}
+			ReactDOM.render(
+			<Person1  {...p2}/>,
+			document.getElementById("root")
+			);
+		</script>
+	</body>
+</html>

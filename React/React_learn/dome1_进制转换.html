@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		<script type="text/babel">
+			const datas ={
+				d:"十进制数",
+				h:"十六进制数",
+				b:"二进制数",
+				o:"八进制数"
+			}
+			//-->16
+			function toH(data){
+				const input = parseInt(data);
+				if (Number.isNaN(input)) {
+				  return "";
+				}
+				console.log("调用了toH",typeof data);
+				return parseInt(data).toString(16);
+			}
+			//-->10
+			function toD(data){
+				if(data=="")
+					return "";
+				if (data>'G' && data<'Z' || data>'g' && data<'z')
+				{
+					//alert("输入有误!",data);
+					return "";
+				}
+				console.log("调用了toD");
+				return parseInt(data,16).toString();
+			}
+			
+			//-->2
+			function toB(data){
+				if(data=="")
+					return "";
+					console.log("调用了toB");
+				return parseInt(data).toString(2);
+			}
+			function toO(data){
+				if(data=="")
+					return "";
+					console.log("调用了toO");
+				return parseInt(data).toString(8);
+			}
+			
+			function tryConvert(data, convert) {
+			  //console.log("调用了tryConvert");
+			  const input = parseInt(data);
+			  if (Number.isNaN(input)) {
+			    return "";
+			  }
+			  return convert(input);
+			}
+			
+			
+			class DataInput extends React.Component{
+				constructor(props) {
+				    super(props);
+					this.handleChange = this.handleChange.bind(this);
+				}
+				handleChange(e){
+					this.props.onChange1(e.target.value);
+					/*let flag = this.props.index; 
+					let inputValue = e.target.value;
+					//console.log(typeof inputValue,"sss");
+					//console.log(this.props.index,"王韬");//判断条件  每次输入的数都转换为10进制存储到Calculator的state中
+					if(flag == "d"){//10进制
+						this.props.onChange(inputValue);
+					}
+					else if(flag == "h"){
+						console.log(parseInt(inputValue,16));
+						this.props.onChange(parseInt(inputValue,16).toString());
+						//从16转到10
+					}
+					else if(flag == "b"){
+						console.log(parseInt(inputValue,2));
+						this.props.onChange(parseInt(inputValue,2).toString());
+					}
+					else{
+						this.props.onChange(parseInt(inputValue,8).toString());
+					}*/
+				}
+				render(){
+					const index = this.props.index;
+					const data = this.props.data;
+					return(
+						<fieldset>
+						     <legend>{datas[index]}:</legend>
+						     <input value={data}
+						            onChange={this.handleChange} />
+						</fieldset>
+					);
+				}
+			}
+			
+			class Calculator extends React.Component {
+				constructor(props){
+					super(props);
+					this.state={
+						data: "",
+						index: "d"
+					};
+					this.handletoH = this.handletoH.bind(this);
+					this.handletoD = this.handletoD.bind(this);
+					//this.handletoB = this.handletoB.bind(this);
+					//this.handletoO = this.handletoO.bind(this);
+				}
+				handletoH(data){
+					this.setState({
+						data: data,
+						index: "d"
+					});
+					//console.log(this.state.data); 	
+					console.log(data,this.state.index);
+				}
+				handletoD(data){
+					this.setState({
+						data: data,
+						index: "h"
+					});
+				
+					console.log(data,this.state.index);
+				}
+				
+			/*	handletoB(data){
+					this.setState({
+						data:data,   //ES6解构写法(属性名和变量名一样)
+						index: "b"
+					});
+					console.log(data,this.state.index);
+				}
+				handletoO(data){
+					this.setState({
+						data,
+						index: "o"
+					});
+					console.log(data,this.state.index);
+				}*/
+				
+				render(){
+					const data = this.state.data;
+					//console.log(typeof data);
+					const index = this.state.index;
+					const value1 = index === "d"? data : toD(data);
+					const value2 = index === "h"? data : toH(data);
+					//const value3 = index === "b"? data : toB(data);
+					//const value4 = index === "o"? data : toO(data);
+					return(
+						<div>
+							<DataInput data={value1} index="d" onChange1={this.handletoH}/>
+							<DataInput data={value2} index="h" onChange1={this.handletoD}/>
+						</div>
+					);
+				}
+			}
+			ReactDOM.render(
+			<Calculator />,
+			document.getElementById("root"));
+		</script>
+	</body>
+</html>

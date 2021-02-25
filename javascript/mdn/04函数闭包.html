@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+		
+			function outside(x) {
+			  function inside(y) {
+			    return x + y;
+			  }
+			  return inside;
+			}
+			fn_inside = outside(3); // 可以这样想：给一个函数，使它的值加3
+			result = fn_inside(5); // returns 8
+			
+			result1 = outside(3)(5); // returns 8
+			
+			
+			/**注意到上例中 inside 被返回时 x 是怎么被保留下来的。
+			一个闭包必须保存它可见作用域中所有参数和变量。因为每一次调用传入的参数都可能不同，每一次对外部函数的调用实际上重新创建了一遍这个闭包。
+			只有当返回的 inside 没有再被引用时，内存才会被释放。
+			
+			
+			函数A可以包含函数B，函数B可以再包含函数C。B和C都形成了闭包，所以B可以访问A，C可以访问B和A。因此，闭包可以包含多个作用域；他们递归式的包含了所有包含它的函数作用域。
+			这个称之为作用域链。（稍后会详细解释）
+			*/
+		   function Person() {
+		     // 构造函数Person()将`this`定义为自身
+		     this.age = 0;
+		   
+		     setInterval(function growUp() {
+		       // 在非严格模式下，growUp()函数将`this`定义为“全局对象”，
+		       // 这与Person()定义的`this`不同，
+		       // 所以下面的语句不会起到预期的效果。
+		       this.age++;
+		     }, 1000);
+		   }
+		   //不会达到预期效果, this.age++;指向了全局
+		   var p = new Person();
+		   
+		   function Person() {
+		     var self = this; // 有的人习惯用`that`而不是`self`，
+		                      // 无论你选择哪一种方式，请保持前后代码的一致性
+		     self.age = 0;
+		   
+		     setInterval(function growUp() {
+		       // 以下语句可以实现预期的功能
+		       self.age++;
+			  
+		     }, 1000);
+		   }
+		   //用箭头函数达到效果
+		   function Person(){
+		     this.age = 0;
+		   
+		     setInterval(() => {
+		       this.age++; // 这里的`this`正确地指向person对象
+		     }, 1000);
+		   }
+		   
+		   var p = new Person();
+		   
+		   
+		   let url='https://mozilla.org/?x=шеллы';	   
+		   console.log(encodeURI(url));
+		   console.log(decodeURI(encodeURI(url)));
+		</script>
+	</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+        异步遍历器
+           - 最大特点 就是调用遍历器的next方法，返回的是一个 Promise 对象。
+           - 对象的异步遍历器接口，部署在Symbol.asyncIterator属性上面
+          
+         */
+        //自定义异步可迭代对象
+        const myAsyncIterable = new Object();
+        myAsyncIterable[Symbol.asyncIterator] = async function* () {
+            yield 'hello';
+            yield 'async';
+            yield 'iterator!';
+        };
+
+        (async () => {
+            for await (const x of myAsyncIterable) {
+                console.log(x);
+                // expected output:
+                //    "hello"
+                //    "async"
+                //    "iteration!"
+            }
+        })()
+
+        //  - for await ..of遍历异步的 Iterator 接口。
+        // async function f() {
+        //     for await (const x of createAsyncIterable(['a', 'b'])) {
+        //         console.log(x);
+        //     }
+        // }
+        //     // a
+        //     // b
+
+
+        // 异步 Generator 函数
+        //异步 Generator 函数的作用，是返回一个异步遍历器对象。
+        //在语法上，异步 Generator 函数就是async函数与 Generator 函数的结合。
+        async function* gen() {
+            yield 'hello';
+        }
+        const genObj = gen();
+        genObj.next().then(x => console.log(x));
+        // { value: 'hello', done: false }
+
+        //异步遍历器的设计目的之一，就是 Generator 函数处理同步操作和异步操作时，能够使用同一套接口。
+        // 同步 Generator 函数
+        function* map(iterable, func) {
+            const iter = iterable[Symbol.iterator]();
+            while (true) {
+                const { value, done } = iter.next();
+                if (done) break;
+                yield func(value);
+            }
+        }
+
+        // 异步 Generator 函数
+        async function* map(iterable, func) {
+            const iter = iterable[Symbol.asyncIterator]();
+            while (true) {
+                const { value, done } = await iter.next();
+                if (done) break;
+                yield func(value);
+            }
+        }
+
+
+        async function* readLines(path) {
+            let file = await fileOpen(path);
+
+            try {
+                while (!file.EOF) {
+                    yield await file.readLine();
+                }
+            } finally {
+                await file.close();
+            }
+        }
+        //使用异步Generator函数
+        // (async function () {
+        //     for await (const line of readLines(filePath)) {
+        //         console.log(line);
+        //     }
+        // })()
+        //异步 Generator 函数的返回值是一个异步 Iterator，即每次调用它的next方法，会返回一个 Promise 对象，
+        /*
+        异步操作前面使用await关键字标明，即await后面的操作，应该返回 Promise 对象。
+        凡是使用yield关键字的地方，就是next方法停下来的地方，它后面的表达式的值（即await file.readLine()的值），会作为next()返回对象的value属性，
+        这一点是与同步 Generator 函数一致的。
+
+        await命令用于将外部操作产生的值输入函数内部，yield命令用于将函数内部的值输出。
+         */
+
+        //async函数返回一个promise对象
+         async function fn  (){
+             return 'woshi tisou1';
+         }
+         fn().then(v=>console.log(v))
+    </script>
+</body>
+
+</html>

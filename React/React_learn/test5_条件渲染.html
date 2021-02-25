@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<div id="div1"></div>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		<script type="text/babel">
+			function UserGreeting(props) {
+				return <h1>Welcome bcak!</h1>;
+			}
+			
+			function Guestgreeting(props) {
+				return <h1>Please sign.{props.name}</h1>;
+			}
+			
+			function Greeting(props) {
+				const isLoggedIn = props.isLoggedIn;
+					
+				if (isLoggedIn) {
+					return <UserGreeting name="Siry"/>;
+				}else{
+					return <Guestgreeting name="Siry"/>;
+				}
+			}  
+			
+			function LoginButton(props) {
+				return (
+				<button onClick={props.onClick}>Login</button>
+				);
+			}
+			
+			function LogoutButton(props) {
+				return (
+				<button onClick={props.onClick}>Logout</button>
+				);
+			}
+			
+			class LoginControl extends React.Component {
+				constructor(props) {
+					super(props);
+					this.state = {isLoggedIn : false};
+					this.loginClick = 
+				this.loginClick.bind(this);
+					this.logoutClick = 
+				this.logoutClick.bind(this);
+				}
+				loginClick() {
+					this.setState({isLoggedIn : true});
+				}
+				logoutClick() {
+					this.setState({isLoggedIn : false});
+				}
+				render() {
+					const isLoggedIn = this.state.isLoggedIn;
+					let button;
+					if (isLoggedIn){
+						button = <LogoutButton onClick={this.logoutClick} />;
+					}else{
+						button = <LoginButton onClick={this.loginClick} />;
+					}
+					return (
+						<div>
+							<Greeting isLoggedIn={isLoggedIn} />
+							{button}
+						</div>
+					);
+				}
+			}
+			
+			ReactDOM.render(
+			<LoginControl />,
+			document.getElementById("root")
+			);
+			
+			
+			function Mailbox(props) {
+				const unreadMessages = props.unreadMessages;
+				return (
+					<div>
+						<h1>Hellow!</h1>
+						{unreadMessages.length > 0&&
+							<h2>
+								You have {unreadMessages.length} unread messages.
+							</h2>
+						}
+					</div>
+				);
+			}
+			const messages = ['React','Re:React','Re:Re:React'];
+			
+			ReactDOM.render(
+			<Mailbox unreadMessages={messages}/>,
+			document.getElementById("div1")
+			);
+			
+			function Warningbanner(props) {
+				if(!props.warn) {
+					return null;
+					//不渲染
+				}
+				return(
+					<div className="warning">
+						Warning!
+					</div>
+				);
+			}
+			
+			class Page extends React.Component{
+				constructor(props) {
+					super(props);
+					this.state = {showWarning: true};
+					this.handleToggleClick = 
+				this.handleToggleClick.bind(this);
+				//绑定事件
+				}
+				handleToggleClick(){
+					//this.setState(state=>({showWarning: !this.state.showWarning	}				}));)
+					this.setState(
+					({showWarning: !this.state.showWarning
+					}));
+				}
+				render(){
+					return(
+					<div>
+						<Warningbanner warn={this.state.showWarning} />
+						<button onClick={this.handleToggleClick}>
+							{this.state.showWarning ? 'hide' :'Show'}
+						</button>
+					</div>
+					); 
+				}
+			}
+			ReactDOM.render(
+			<Page />,
+			document.getElementById("div1")
+			);
+			console.log("ss");
+		</script>
+	</body>
+</html>

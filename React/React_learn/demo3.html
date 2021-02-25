@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+	<script src="./js/React.js"></script>
+	<script src="./js/React-dom.js"></script>
+	<script src="./js/babel.js"></script>
+	<script src="./js/prop-types.js"></script>
+	<script type="text/babel">
+		class Todo extends React.Component {
+			constructor(props){
+				super(props);
+				//this.handlechange = this.handlechange.bind(this);
+				this.handleClick = this.handleClick.bind(this);
+			}
+		
+			handleClick(){
+				this.props.onClick(this.input.value);
+				this.input.value = "";
+			}
+			render(){
+				//console.log("child-Todo");
+				let count = this.props.count;
+				return(
+					<div>
+						<input 
+						type="text" 
+						ref={(input => this.input = input)}/>
+						<button onClick={this.handleClick}>Add # {count+1}</button>
+					</div>
+				);
+			}
+		}
+		Todo.propTypes = {
+			count:PropTypes.number.isRequired
+		}
+		
+		class List extends React.Component{
+			constructor(props){
+				super(props);
+				//this.handleClick = this.handleClick.bind(this);
+			}
+			componentDidMount(){
+				console.log("child--componentDidMount");
+			}
+			componentDidUpdate(){
+				console.log("child--componentDidUpdate");
+			}
+			componentWillUnMount(){
+				console.log("child--componentWillUnMount");
+			}
+			shouldComponentUpdate(){
+				console.log("child--shouldComponentUpdate");
+				return true;
+			}
+		
+			render(){
+				//console.log("child-List");
+				//const todos = this.props.todos;
+				const {todos} = this.props;//解构赋值
+				return(
+					<ul>
+						{
+							todos.map((value,index) => {
+								return <li 
+								key={index+value}
+								onClick={() =>{
+									this.props.onDeleteClick(index)
+								}}
+								>
+								{value}
+								</li>
+							})
+						}
+					</ul>
+				);
+			}
+		}
+		List.propTypes = {
+			todos:PropTypes.array.isRequired
+		}
+		
+		
+		class Siry extends React.Component {
+		  constructor(props){
+			super(props);
+			this.state = {
+				todos: ["react","python","c++"]
+			};
+			//this.handleChange = this.handleChange.bind(this);
+			this.handleClick = this.handleClick.bind(this);
+			this.deleteClick = this.deleteClick.bind(this);
+		}
+		componentDidMount(){
+			console.log("parent--componentDidMount");
+		}
+		componentDidUpdate(){
+			console.log("parent--componentDidUpdate");
+		}
+		componentWillUnMount(){
+			console.log("parent--componentWillUnMount");
+		}
+		shouldComponentUpdate(){
+			console.log("parent--shouldComponentUpdate");
+			return true;
+		}
+		handleClick(inputvalue){
+			this.setState({
+				todos:[...this.state.todos,inputvalue],
+			});
+			
+		}
+		deleteClick(index){
+			console.log("Siry的del:"+index);
+			//将this.state.values 复制到一个新数组values中
+			//let values = [].concat(this.state.values);
+			//let values = [...this.state.todos];
+			let values = this.state.todos.slice();
+			values.splice(index,1);//切除数组指定位置的项
+			this.setState({
+				todos:values
+			});
+		}
+	
+		  render() {
+			 // console.log("parent-Siry");
+		    return (
+		     <div>
+				<h2>Simple TODO List</h2>
+				<Todo 
+				count={this.state.todos.length}
+				onClick={this.handleClick}/>
+				<List 
+				todos={this.state.todos}
+				onDeleteClick={this.deleteClick}/>
+			 </div>
+		    );
+		  }
+		}
+		
+		ReactDOM.render(
+		<Siry />,
+		document.getElementById("root")
+		);
+	</script>
+	</body>
+	
+</html>

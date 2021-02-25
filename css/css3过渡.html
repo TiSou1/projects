@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			div{
+				width: 200px;
+				height: 100px;
+				
+				background-color: #0000FF;
+				/* 过度的效果 */
+				transition-property: all;
+				/* 过度持续时间 */
+				transition-duration:2s ;
+				/* 过度时间曲线 */
+				transition-timing-function: ease;
+				/* 过渡时间 默认为0*/
+				transition-delay: 0s;
+							
+				/* 以上可以简写 */
+				/* transition: width 1s linear 0.2s; */
+			}
+			div:hover{
+				width: 300px;
+			}
+			
+			#b{
+				width: 6.25rem;
+				height: 100px;
+				background-color: red;
+				transition: 0.5s linear;
+			}
+			#b:hover{
+				width: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			
+		</div>
+		
+		<div id="b"></div>
+	</body>
+</html>

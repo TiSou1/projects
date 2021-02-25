@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let x = 1, y = 2;
+        let number = { x, y };
+        console.log(number)
+
+        const people = {
+            name: 'siry',
+            // grade: function(){
+            //     return 66;
+            // }
+            //方法,替换上面的写法   
+            grade() {
+                return 66;
+            }
+        }
+        console.log(people.grade());
+        //1.遍历对象属性
+        for (let title in people)
+            console.log(title)
+        //2.返回数组形式的键(不包含值)
+        console.log(Object.keys(people))
+        //3.Object.getOwnPropertyNames(obj)
+        console.log(Object.getOwnPropertyNames(people))
+        //4.Object.getOwnPropertySymbols(obj)返回一个数组，包含对象自身的所有 Symbol 属性的键名。
+        console.log(Object.getOwnPropertySymbols(people))
+        //5.Reflect.ownKeys(obj)
+        console.log(Reflect.ownKeys(people))
+        //**********方法的name属性
+        function f1() {
+            return true;
+        }
+        const f2 = () => {
+            return false;
+        }
+
+        console.log(f1.name, f2.name)
+
+
+
+
+
+
+
+        //******************对象的解构赋值
+        let obj = { a: { b: 1 } };
+        let { ...xx } = obj;
+        obj.a.b = 2;
+        xx.a.b // 2
+        console.log(xx.a.b)
+        //对象的结构赋值是浅拷贝
+        //解构赋值,不能赋值继承自原型的对象属性
+        let o1 = { a: 1 };
+        let o2 = { b: 2 };
+
+        //设置对象原型
+        //1. Object.setPrototypeOf(o2,o1)
+        //2.
+        o2.__proto__ = o1;
+        let { ...o3 } = o2;
+        o3 // { b: 2 }
+        console.log(o2, o3)
+        o3.a // undefined,o3经解构过来,不能继承o2的原型o1
+
+
+        const o = Object.create({ x: 1, y: 2 });
+        o.z = 3;
+
+        // let { x, ...newObj } = o;
+        // let { y, z } = newObj;
+        // x // 1
+        // y // undefined
+        // z // 3
+        //变量x是单纯的解构赋值，所以可以读取对象o继承的属性；变量y和z是扩展运算符的解构赋值，
+        //只能读取对象o自身的属性，所以变量z可以赋值成功，变量y取不到值
+        let foo = { ...['a', 'b', 'c'] };
+        console.log(foo)
+
+
+
+
+
+        //*************连判断运算符
+        let message = {
+            body:{user:{firstName:'siry'}}
+        }
+        //错误写法
+        const fitstName = message.body.user.firstName;
+        //正确写法
+        const firstName = (message
+            && message.body
+            && message.body.user
+            && message.body.user.firstName) || 'default';
+        //三元运算符,判断
+        //const fooValue = fooInput ? fooInput.value : undefined
+
+        //es2020引入"链判断运算符"
+        //，**左侧的对象是否为null或undefined。如果是的，就不再往下运算，而是返回undefined。
+       // const firstName = message?.body?.user?.firstName || 'default';
+       let aa = {bb:2};
+       console.log(aa?.bb)//bb为aa下的属性
+
+       //指定默认值通常使用||运算符
+       let response = {txt:0}
+        let headerTxt = response.txt || 'hello world';
+        console.log(headerTxt)
+        //以上写法有一个问题
+        //当属性值为0或者为false时,也会使用默认值
+        //es2020引入新的运算符??
+        headerTxt = response.txt ?? 'hello'
+        console.log(headerTxt)
+    </script>
+</body>
+
+</html>

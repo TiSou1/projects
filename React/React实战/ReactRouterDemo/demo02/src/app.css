@@ -1,0 +1,12 @@
+*{
+    color: salmon;
+    /* 去掉<a>的下划线 */
+    text-decoration: none;
+}
+ul{
+    display: flex;
+}
+ ul li{
+    list-style: none;
+    margin-left: 20px;
+}

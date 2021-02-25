@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#root{
+				position: relative;
+				width: 800px;
+				height: 600px;
+				background-color: antiquewhite;
+			}
+			.root{
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="root">
+		<div class="root">
+			
+		</div>
+		<div class="root">
+			
+		</div>
+		<div class="root">
+			
+		</div>
+		</div>
+		<script type="text/javascript">
+			window.onload = ()=>{
+				const div1s = document.getElementsByClassName("root");
+				let l = div1s.length
+				for(let i=0;i<l;i++){
+					div1s[i].innerHTML = i+1;
+					div1s[i].id = i;
+					div1s[i].style.backgroundColor = "#00ffff";
+					if(i==0){
+						let pos=0;
+						let s1 = setInterval(ss1,10);
+						function ss1(){							
+							  if (pos == 800) {
+							      clearInterval(s1);
+							    } else {
+							      pos++; 
+							      //div1s[i].style.top = pos + "px"; 
+							      div1s[i].style.left = pos + "px"; 
+							    }
+						}
+					}
+					else if(i==1){
+						let pos=0;
+						let s2 = setInterval(()=>{
+							
+							  if (pos == 800) {
+							      clearInterval(s2);
+							    } else {
+							      pos++; 
+							      div1s[i].style.top = pos + "px"; 
+							      div1s[i].style.left = pos + "px"; 
+							    }
+						},10);
+					}else{
+						let pos=0;
+						let s3 = setInterval(()=>{
+							
+							  if (pos == 800) {
+							      clearInterval(s3);
+							    } else {
+							      pos++; 
+							      div1s[i].style.top = pos + "px"; 
+							      //div1s[i].left = pos + "px"; 
+							    }
+						},20);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

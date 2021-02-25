@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .nav {
+            width: 1200px;
+            background-color: aquamarine;
+            /* height: 50px;    */
+            margin: 0 auto;
+        }
+
+        .nav-bar::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .nav-bar {
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            float: left;
+            padding: 0 20px;
+            line-height: 50px;
+        }
+
+        .nav-item:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-bar">
+            <div class="nav-item">web</div>
+            <div class="nav-item">css</div>
+            <div class="nav-item">javascript</div>
+            <div class="nav-item">python</div>
+            <div class="nav-item">react</div>
+            <div class="nav-item">java</div>
+        </div>
+    </nav>
+
+    <header></header>
+    <nav></nav>
+    <main></main>
+    <footer></footer>
+    
+</body>
+
+</html>

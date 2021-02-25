@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      
+    </script>
+    <script type="module">
+        import assert from './js/assert.js';
+        assert(0,'asd');
+        console.time('operation');
+        for(let i=0;i<=10;i++)
+            console.log(i)
+        console.timeEnd('operation');
+        function ninja1(){
+            return this;
+        }
+        function samuria(){
+             'use strict';
+            return this;
+        }
+        console.log(ninja1())
+        console.log(samuria())
+
+    </script>
+</body>
+</html>

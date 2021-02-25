@@ -1,0 +1,145 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.box{
+	width: 500px;
+	height: 600px;
+	margin:20px auto;
+	
+}
+.header{
+	height: 100px;
+	position: relative;
+	background-color: beige;
+}
+.header .title{
+	font-size: 25px;
+	color: rgba(0,0,0,.8);
+	line-height: 100px;
+	font-weight: bold;
+	margin-left: 30px;
+}
+.header .start,.restart{
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 5px;
+	position: absolute;
+	bottom: 10px;
+	right: 30px;
+	background-color: #bbada0;	
+	cursor: pointer;
+}
+.restart{
+	bottom: 50px;
+}
+.header .grade{
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+	background-color: #bbada0;
+	position: absolute;
+	top: 10px;
+	left: 40%;
+	border-radius: 5px;
+	text-align: center;
+}
+.grade .txt{
+	font-size: 18px;
+	margin-top: 10%;
+	color: #eee4da;
+}
+.show{
+	margin-top: 8px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.box .content{
+	height: 500px;
+	position: relative;
+	background-color:#bbada0;
+}
+.content div.item{
+	box-sizing: border-box;
+	width: 100px;
+	height: 100px;
+	float: left;
+	background-color: #eee4da59;
+	margin: 12.5px;
+	border-radius: 5px;
+}
+.hidden{
+	width: 500px;
+	height: 500px;
+	position: absolute;
+	background-color: rgba(0,0,0,.25);
+	text-align: center;
+	font-size: 32px;
+	line-height: 500px;
+	color: #eee;
+	display: none;
+}
+.grade-show{
+	position: absolute;	
+}
+.cell{
+	width: 100px;
+	height: 100px;
+	border-radius: 5px;
+	float: left;
+	margin: 12.5px;
+	font-size: 42px;
+	text-align: center;
+	line-height: 100px;
+	font-weight: bold;
+	position: relative;
+}
+/* 数字样式 */
+.num2{
+	color: #776e65;
+	background-color: #eee4da;
+}
+.num4{
+	color: #776e65;
+	background-color: #ede0c8;
+}
+.num8{
+	color: #f9f6f2;
+	background-color: #f2b179;
+}
+.num16{
+	color: #f9f6f2;
+	background-color: #f59563;
+}
+.num32{
+	color: #f9f6f2;
+	background-color: #f67c5f;
+}
+.num64{
+	color: #f9f6f2;
+	background-color: #f65e3b;
+}
+.num128{
+	color: #f9f6f2;
+	background-color: #edcf72;
+}
+.num256{
+	color: #f9f6f2;
+	background-color: #edcf72;
+}
+.num512{
+	color: #f9f6f2;
+	background-color: #edcf72;
+}
+.num1024{
+	color: #f9f6f2;
+	background-color: #edcf72;
+}
+.num2048{
+	color: #f9f6f2;
+	background-color: #edcf72;
+}

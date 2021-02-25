@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function  Ninja(){}
+        Ninja.message = 'hello';
+
+        const ninja = new Ninja();
+        const a1 = ninja.message;
+     
+        console.log(a1);//undefine
+        //message属性在构造函数Ninja中定义，通过ninja对象无法访问。
+
+        //3.
+        function Person(){}
+        function Ninja2(){}
+        let n1 = new Ninja1();
+        //访问ninja.constructor时，在ninja的原型上找到constructor属性。
+        //ninja由Ninja构造函数创建，因此constructor属性指向Ninja函数。
+
+        //4.
+        class Warrir{
+            constructor(weapon){
+                this.weapon = weapon;
+            }
+            wield(){
+                return 'wielding' + this.weapon;
+            }
+            static duel(warrior1,warrior2){
+                return warrior1.wield() + ' ' + warrior2.wield();
+            }
+        }
+        //es5改写
+
+        function Warrir(){
+            this.weapon = weapon;
+        }
+        Warrir.prototype.wield = function(){
+            return 'wielding' + this.weapon;
+        }
+        Warrir.duel = function(){
+            return warrior1.wield() + ' ' + warrior2.wield();
+        }
+
+
+    </script>
+</body>
+</html>

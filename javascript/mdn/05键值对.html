@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			body{
+				background-color: red;
+			}
+			#btn{
+				width: 100px;
+				height: 100px;
+				border-radius: 5px;
+				background-color: antiquewhite;
+				outline: none;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="c1"></div>
+		<button id="btn">点击</button>
+		<script>
+			
+			document.addEventListener('keydown',(e)=>{
+				console.log(e);
+				let code = e.keyCode;
+				if(code == 37)
+					console.log("左移...");
+				else if(code == 38)
+					console.log("上移...");
+				else if(code == 39)
+					console.log("右移...");
+				else if(code == 40)
+					console.log("下移...");
+				else
+					console.log('其他键位...');
+			})
+			//映射
+			let asying = new Map();
+			asying.set(1,'woof');
+			asying.set('cat','kkk');
+			asying.set('cat1','kkk2');
+			console.log(asying.size);
+			console.log(asying.get(1));
+			console.log(asying.has('cat'));
+			asying.delete('cat1');
+			console.log(asying.size)
+			asying.clear();//清空map
+			console.log(asying.size)			
+			console.log(1/2);//0.5
+			
+			
+			//集合setSet对象是一组值的集合，
+			//这些值是不重复的，可以按照添加顺序来遍历
+			let s1 = new Set();
+			s1.add(1);
+			s1.add('some txt');
+			s1.add(true);
+			s1.add([1,2,3]);
+			s1.add({name:'tisou1'});
+			console.log(s1.has(1));
+			console.log(s1.size);
+			for(let item of s1)
+				console.log(item);
+			
+			
+			let a = [1,2,3,2,4,5];
+			//集合到数组的转换
+			console.log(Array.from(s1));
+			console.log([...s1])
+			
+			//数组到集合的转换,去除重复的值
+			let s2 = new Set(a);
+			console.log(s2);
+			
+		</script>
+	</body>
+</html>

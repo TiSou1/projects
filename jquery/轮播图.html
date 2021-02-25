@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+				/* transition: all 1.5s; */
+			}
+			#main{
+				position: relative;
+				width: 600px;
+				height: 720px;
+				margin: 50px auto;
+			}
+			#inner{		
+				position: relative;
+				width: 520px;
+				height: 720px;	
+				margin: 0px auto;
+				background-color: greenyellow;
+				overflow: hidden;	
+			}
+			#inner ul{
+				position: absolute;
+				/* width: 2200px; */
+				/* left: -780px; */
+				list-style: none;								
+			}
+			#inner li{
+				float: left;
+				margin: 10px;
+			}
+			#inner img{
+				width: 500px;
+				height: 700px;
+			}
+			#btn{
+				position: absolute;
+				top: 50%;
+				width: 100%;
+				height: 50px;
+				/* background-color: red; */
+				/* opacity: 0.5; */
+				overflow: hidden;
+			}
+			#btn i{
+				display: block;
+				width: 50px;
+				height: 50px;
+				background-color: rgba(0,0,250,0.3);
+				font-size: 45px;
+				font-style: normal;
+				line-height: 50px;
+				text-align: center;
+			}
+			#btn i:hover{
+				cursor: pointer;
+				font-size: 50px;
+			}
+			#btn .btn-left{				
+				float: left;				
+			}
+			#btn .btn-right{				
+				float: right;
+			}
+			#bar{
+				margin-top: 10px;
+			}
+			#bar ul{
+				text-align: center;
+			}
+			#bar li{
+				display: inline-block;
+				margin: 0 3px;
+				width: 50px;
+				height: 10px;				
+				background-color: rgba(255,0,0,0.6);
+				transition: all 0.5s;
+			}
+			#bar li:hover{
+				cursor: pointer;
+				height: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<div id="inner">
+				<ul id="ul1" class="ssss">
+					<li><img src='./img/1.jpg'/></li>
+					<li><img src='./img/2.jpg' /></li>
+					<li><img src='./img/4.jpg' /></li>
+					<li><img src='./img/5.jpeg' /></li>	
+					<li><img src='./img/1.jpg'/></li>
+				</ul>
+			</div>				
+				<div id="bar">
+					<ul>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+					</ul>
+				</div>
+				
+				<div id="btn">
+					<i class="btn-left"><</i>
+					<i class="btn-right">></i>
+				</div>		
+		</div>
+		<script type="text/javascript">
+			window.onload = ()=>{				
+				const imglist = document.getElementsByTagName("img");
+				const ul = document.getElementById("ul1");
+				const btn_left = document.getElementsByClassName('btn-left')[0];
+				const btn_right = document.getElementsByClassName('btn-right')[0];
+				const allLi = document.querySelectorAll("#bar li")
+				const aLi = Array.from(allLi);
+				let active;
+				let index = 0;
+				let oldLeft = 0;
+				ul.style.width = imglist.length*520 + "px";
+				aLi[0].style.backgroundColor = 'rgba(0,255,0,0.5)';//默认第一张
+				//为所有的下标添加点击事件
+				for(let i=0;i<aLi.length;i++)
+					aLi[i].onclick = ()=>{
+						clearInterval(active);						
+						if(index<i)
+						{
+							index = i;
+							move(-520*index,-8);//向前走
+						}							
+						else	{
+							index = i;
+							move(-520*index,8);//向后走
+						}
+						autoChange();
+						setli(index);
+					}
+					//自动轮播函数
+					function autoChange(){
+						        active = setInterval(()=>{
+								index++;
+								index%=imglist.length;
+								move(-520*index,-8);
+								setli(index);
+							},3000);
+					}
+					autoChange();//自动执行
+					//设置下标的颜色
+					function setli(index){
+						for(let i=0;i<aLi.length;i++){
+							aLi[i].style.backgroundColor = 'rgba(255,0,0,0.5)';
+						}
+						if(index==imglist.length-1)
+							aLi[0].style.backgroundColor = 'rgba(0,255,0,0.5)';
+						else
+							aLi[index].style.backgroundColor = 'rgba(0,255,0,0.5)';
+					}
+					//动画函数
+					function move(target,speed){
+							clearInterval(ul.activ);
+							ul.activ = setInterval(()=>{
+							let oldLeft = ul.offsetLeft;
+							let curret = getComputedStyle(ul,null)['left'];
+							// if(curret>target){
+							// 	//大于图片右移  小于图片左移
+							// 	speed = -speed;
+							// }
+							let newLeft = oldLeft + speed;
+							
+							//console.log("curren:"+curret,"oldLeft:"+oldLeft);
+							//if(window.getComputedStyle)
+							//获取属性值
+							//console.log(getComputedStyle(ul,null)['left']);
+						
+							
+							if((speed < 0 && newLeft < target) || (speed > 0 && newLeft > target)){
+								//移动的距离不正好等于-520倍数时
+									newLeft = target;
+									//ul.style.left = newLeft + 'px';
+								}
+							ul.style.left = newLeft + 'px';
+																	
+							if(newLeft==target)//每一栋一张图片 就短暂暂停一下
+								{
+									clearInterval(ul.activ);
+									callback1();//从最后一张直接返回到第一张
+									//第一张和最后一张一样,在视觉上 造成连续动画
+								}
+								function callback1(){
+									if(index>=imglist.length-1)//显示为最后一张图片 立马切换为第一张
+										{
+											console.log("返回第一张图片...");
+											index=0;
+											ul.style.left = 0 + 'px';
+										}
+								}
+						},20)
+						
+						console.log(index);
+					}
+					
+					//左右按钮点击事件
+					btn_left.addEventListener('click',()=>{
+						btnC(btn_left,8);
+					});
+					btn_right.addEventListener('click',()=>{					
+						btnC(btn_right,-8);
+					});
+					function btnC(obj,speed){
+						//console.log(obj);
+						if(speed<0){//右移
+							index++;
+							if(index>imglist.length-1){
+								index = 0;
+							}
+						}else{//左移
+							index--;
+							if(index<0){
+								//第一张到最后一张 直接设置
+								ul.style.left = -520*(imglist.length-1) + 'px';
+								index = 3;
+							}
+						}						
+						clearInterval(active);
+						move(-520*index,speed);
+						autoChange();
+						setli(index);
+					}
+			}
+		</script>
+	</body>
+</html>

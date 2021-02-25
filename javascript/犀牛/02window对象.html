@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	<script>
+		//计时器
+		// setTimeout(()=>console.log('计时器开始..'),1000);//1s
+		// let t2 = setInterval(()=>console.log('每隔0.5秒调用一次'),500);
+		// setTimeout(()=>clearInterval(t2),1000);
+		
+		//在使用location.tostring()时,location等价于location.href
+		console.log(window.location.toString());
+		console.log(document.location);
+		
+		let query = window.location.search.substring();
+		console.log(query);
+		
+		let  str = 'wangtao';
+		console.log(str.substr(1,5));//从下表1开始长度为5
+		console.log(str.substring(1,5));//下标1到5(不包含5)
+		
+		
+		//浏览器历史history
+		console.log(history);
+		// console.log(history.back())//后退
+		// console.log(history.forward())//浏览器中历史前进
+		
+		
+		console.log(navigator);
+		
+		console.log(window.screen);
+		
+		
+		let name = window.prompt('输入你的名字');
+		let okOrCancle = confirm('确定或者取消');
+		console.log(name,okOrCancle);
+		//打开新窗口
+		//window.open('01客户端js.html');
+	</script>
+	</body>
+</html>

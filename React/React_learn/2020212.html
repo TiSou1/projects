@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+	<script src="./js/React.js"></script>
+	<script src="./js/React-dom.js"></script>
+	<script src="./js/babel.js"></script>
+	<script src="./js/prop-types.js"></script>
+	<script type="text/babel">
+		let [c1,c2,c3] = ['btn1','bnt2','btn3'];			
+		class Bb extends Component {
+		    constructor(props) {
+		        super(props);
+		        this.state = {  }
+		        this.click1 = this.click1.bind(this,c1);
+		    }
+		    click1(c1){
+		        console.log(this,c1);
+		    }
+		    click2(c2){
+		        console.log(this,c2);
+		    }
+		    click3 = () => {
+		        console.log(this);
+		    }
+		      render() {
+		        return (
+		            <div>
+		            <button onClick={this.click1}>按钮1</button>
+		            <button onClick={this.click2.bind(this,c2)}>按钮2</button>
+		            <button onClick={this.click3}>按钮3</button>
+		            </div>
+		        );
+		      }
+		}
+		ReactDOM.render(
+		<Siry/>,
+		document.querySelector("#root")
+		);
+	</script>
+	</body>
+	
+</html>

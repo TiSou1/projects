@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        //js第7中数据类型(Symbol),前六种为undefined、null、布尔值（Boolean）、字符串（String）、数值（Number）、对象（Object）。
+        //生成独一无二的值
+        let s1 = Symbol('bar');//参数是对其的描述
+        let s2 = Symbol('bar');
+        // Symbol函数的参数只是表示对当前 Symbol 值的描述,因此相同参数的Symbol函数的返回值是不相等的。
+        console.log(s1 == s2)//false
+
+        //**读取symbol需要将symbol显示的转换为字符串
+        const sym = Symbol('foo')
+        console.log(String(sym))
+        console.log(sym.toString())
+        console.log(sym)
+        //es2019提供实例属性description,直接返回symbol的描述
+        console.log(sym.description)//foo
+
+
+        //**********作为属性名
+
+        let sym1 = Symbol('s1')
+        let sym2 = Symbol('s2');
+        let a = {}
+        a[sym1] = 2
+        //或者
+        let b = {
+            [sym1]: 1
+        }
+        b[sym1] = 'tttttt'
+        console.log(a[sym1], b[sym1])
+
+
+        //注意，Symbol 值作为对象属性名时，不能用点运算符。
+        const mySymbol = Symbol();
+        const aa = {};
+
+        aa.mySymbol = 'Hello!';
+        aa[mySymbol] // undefined
+        aa['mySymbol'] // "Hello!"
+
+        //在对象的内部，使用 Symbol 值定义属性时，Symbol 值必须放在方括号之中。
+        //如果s不放在方括号中，该属性的键名就是字符串s，而不是s所代表的那个 Symbol 值。
+
+        let obj = {
+            [sym1]() {
+                return true;
+            }
+        }
+
+        //消除魔术字符串
+        const shapeType = {
+            // triangle: 'Triangle'
+            triangle: Symbol('Triangle'),
+        };
+        //可以发现shapeType.triangle等于哪个值并不重要，只要确保不会跟其他shapeType属性的值冲突即可。
+        //因此，这里就很适合改用 Symbol 值。
+
+        function getArea(shape, options) {
+            let area = 0;
+            switch (shape) {
+                case shapeType.triangle:
+                    area = .5 * options.width * options.height;
+                    break;
+            }
+            return area;
+        }
+
+        getArea(shapeType.triangle, { width: 100, height: 100 });
+
+
+
+        //symbol属性名的遍历使用Object,getOwnPropertySymbols()
+        //Reflect.ownKeys()方法可以返回所有类型的键名，包括常规键名和 Symbol 键名。
+        let obj3 = {
+            [Symbol('my_key')]: 1,
+            enum: 2,
+            nonEnum: 3
+        };
+
+        console.log(Reflect.ownKeys(obj3))
+        console.log(Object.getOwnPropertySymbols(obj3))
+        //由于以 Symbol 值作为键名，不会被常规方法遍历得到
+        //我们可以利用这个特性，为对象定义一些非私有的、但又希望只用于内部的方法。
+
+
+
+        //symbol.for(),symbol.keyFor()
+        /*有时，我们希望重新使用同一个 Symbol 值，Symbol.for()方法可以做到这一点。
+        它接受一个字符串作为参数，然后搜索有没有以该参数作为名称的 Symbol 值。
+        如果有，就返回这个 Symbol 值，
+        否则就新建一个以该字符串为名称的 Symbol 值，并将其注册到全局。*/
+
+        let s3 = Symbol.for('s3');
+        let s4 = Symbol.for('s3');
+        console.log(s3 === s4)
+
+        //Symbol.keyFor(s1)方法返回一个已登记的 Symbol 类型值的key。
+    </script>
+</body>
+
+</html>

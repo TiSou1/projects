@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#main_containar{
+				position: absolute;	
+				width: 100px;
+				height: 100px;
+				/* margin: 100px auto; */
+				background-color: #6495ED;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main_containar" ></div>
+		<script type="text/javascript">
+			window.onload = function(){
+				var div1 = document.getElementById("main_containar");
+				document.onmousemove=function(event){
+					event=event || window.event;
+					var left_x = event.clientX;
+					var top_y = event.clientY;
+					//chrom--body拥有滚动条  狐火等 htnl
+					var st = document.documentElement.scrollTop || document.body.scrollTop;
+					var sl = document.documentElement.scrollLeft || document.body.scrollLeft;
+					//获取滚动条距离原来位置的距离
+					//document.documentElement.scrollTop   Chrome可以识别  IE等不能
+					//document.body.scrollTop;     chrome不能识别  IE等能  加||解决兼容问题
+					//console.log(st);
+					div1.style.left = (left_x-50) +  "px";
+					div1.style.top = (top_y-50) +  "px";
+				};
+			};
+		</script>
+	</body>
+</html>

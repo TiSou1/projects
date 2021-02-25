@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<!-- 引入模块 -->
+		<script type="module">
+			import {fn as f, name} from '../js/module.js';
+			f(12);
+			console.log(name);
+			//动态导入
+			import('../js/module.js')
+			  .then((module) => {
+				  console.log(module.name)
+			    // Do something with the module.
+			  });
+		</script>
+		<script>
+			
+			console.log('引入模块...');
+		</script>
+	</body>
+</html>

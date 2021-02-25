@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="box" style="width: 200px;height: 2000px;margin: auto;">
+			asdas
+		</div>
+		<script>
+			let box = document.querySelector('.box');
+		
+			console.log(box.textContent);
+			
+			//parentNode父节点
+			//childNondes,子节点
+			//firstChild,lastChild
+			//nextSibling ,previoursSibling兄弟节点前一个后一个
+			//nodeType节点类型
+			//nodeValue,nodeName
+			
+			
+			//创建,插入,删除,
+			// let script = document.createElement('script');//创建一个<script>元素
+			// script.src = url
+			let p1 = document.createElement('p');//创建一个p元素
+			p1.innerHTML = '我市创建的p元素'
+			box.appendChild(p1);
+			//1.cereateTextNode文本节点,createElement元素节点
+			
+			//2.appendChild,insertBefore
+			//insertBefore(e1,e2),e1为带插入节点,e2为已存在节点
+			
+			//3.removeChild(),replaceChild(e1,e2);e1为新节点,e2带替换节点
+			
+			//滚动条位置
+			function getScrollOffsets(w){
+				w = w || window;
+				if(w.pageXOffset)
+					return {
+						x: w.pageXOffset,
+						y: w.pageYOffset,
+					}
+				//IE
+				let d = w.document;
+				if(document.compatMode == 'CSS1Compat')
+					return {
+						x: d.documentElement.scrollLeft,
+						y: d.documentElement.scrollTop,
+					}
+			}
+			
+			
+			function getViewSize(w){
+				w = w || window;
+				if(w.innerWidth)
+					return {
+						w: w.innerWidth,
+						h: w.innerHeight,
+					}
+				//ie
+				let d = w.document;
+				if(document.compatMode == 'CSS1Compat')
+					return {
+						w: d.documentElement.clientWidth,
+						h: d.documentElement.clientHeight,
+					}
+				//怪异浏览器
+				return {
+					w:d.body.clientWidth,
+					h:d.body.clientHeight,
+				}
+			}
+			// let bb = e.getBoundingClientRect();//获取在史口坐标中的位置
+			// let offsets = getScrollOffsets();//上面的函数
+			// let x = bb.left + offsets.x;
+			// let y = bb.top + offsets.y;
+			// console.log(x,y);
+			console.log(box.offsetWidth,box.offsetHeight);
+			
+			console.log(window.getSelection);
+			//设置元素内联样式两种方法
+			// box.setAttribute('style',s);
+			// box.style.cssText = s
+			console.log(box.getAttribute('style'));
+			console.log(box.style.cssTexts);
+			console.log(window.getComputedStyle(box,null));
+		</script>
+	</body>
+</html>

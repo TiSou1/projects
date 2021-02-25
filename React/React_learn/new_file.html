@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<!-- <script src="https://cdn.bootcss.com/babel-core/5.8.38/browser.js"></script> -->
+		<script src="./js/babel.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="text/babel">
+			class Child extends React.Component{
+				constructor(props) {
+				    super(props);
+					this.state={
+						'name':'siry'
+					};
+				}
+				render(){
+					return(
+						<div>
+							{this.props.name}
+						</div>
+					)
+			}
+		}
+			class Parent extends React.Component{
+				constructor(props) {
+				    super(props);
+					this.state={
+						'name':'siry'
+					};
+				}
+				render(){
+					return(
+						<div>
+							<Child name={this.state.name||"没有填写..."}/>
+						</div>
+					)
+			}
+			}
+			ReactDOM.render(
+			<Parent />,
+			document.getElementById('root'))
+		</script>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//定义一个构造函数
+			//其实就是定义了一个class
+			function Range(name,age){
+				//这两个属性不可继承,每个对象都拥有唯一的属性
+				this.name = name;
+				this.age = age;
+			}
+			Range.prototype.grade = 20;
+			let siry = new Range('siry',22);
+			let tisou1 = new Range('tisou1',21);
+			
+			console.log(siry);
+			console.log(tisou1);
+			console.log(siry instanceof Range);
+			
+			
+			//函数具有prototype
+			//Range.prototype.grade = 20;
+			
+			function NinJia(){
+				this.swung = false;
+				this.swingSword = function(){//实例方法()
+					return !this.swung;
+				}
+				
+			}
+			
+			
+			
+			const yoshi ={skulk:true};
+			const hattori = {sneak:true};
+			const kuma = {creep:true};
+			//为对象设置原型
+			//讲对象youshi的原型设置为对象hattori
+			Object.setPrototypeOf(yoshi, hattori);
+			//将对象hattori的原型设置为kuma
+			Object.setPrototypeOf(hattori, kuma);
+			console.log(Object.getPrototypeOf(yoshi));//获取yoshi的原型对象
+			
+		
+			
+			
+			//原型方法(类似java中静态方法)
+			NinJia.prototype.swingSword = function(){
+				return this.swung;
+			}
+			const ninja = new NinJia();
+			//输出true,在ninja对象中有该方法,不回去原型链里找原型方法
+			console.log(ninja.swingSword())
+			
+			
+			
+		</script>
+	</body>
+</html>

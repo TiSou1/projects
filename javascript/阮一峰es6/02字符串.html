@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //es6加强了对unicod的支持,允许使用\uxxxx的形式表示一个字符
+        console.log('\u0061');//字符a
+        //字符范围为\u0000~\uffff
+
+        //\u20BB7 === \u20BB+7
+
+
+        //字符串接口遍历
+
+        let str1 = 'woshiwnagto'
+        for (let ch of str1)
+            console.log(ch);
+
+
+        //模板字符串
+        let template = `
+<ul>
+  <% for(let i=0; i < data.supplies.length; i++) { %>
+    <li><%= data.supplies[i] %></li>
+  <% } %>
+</ul>
+`;
+
+
+        function compile(template) {
+            // \s空白字符 \S非空白字符
+            const evalExpr = /<%=(.+?)%>/g;
+            const expr = /<%([\s\S]+?)%>/g;
+            template = template
+                .replace(evalExpr, '`); \n echo( $1 ); \n echo(`')
+                .replace(expr, '`); \n $1 \n echo(`');
+
+            // console.log(template);
+            template = 'echo(`' + template + '`)';
+            // console.log(template);
+
+            let script =
+                `(function parse(data){
+        let output = "";
+
+        function echo(html){
+            output += html;
+        }
+
+        ${template}
+
+        return output;
+    })
+    `
+
+            return script;
+        }
+
+        let parse = eval(compile(template));
+        document.body.innerHTML = parse({ supplies: ['broom', 'mop', 'cleaner'] })
+
+
+
+        //标签模板
+        console.log('你好');
+        console.log`你好` // 等同于 console.log(['你好']);
+        //标签模板其实不是模板，而是函数调用的一种特殊形式。“标签”指的就是函数，
+        //紧跟在后面的模板字符串就是它的参数。
+
+
+      
+    </script>
+</body>
+</html>

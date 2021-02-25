@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+	<script src="./js/React.js"></script>
+	<script src="./js/React-dom.js"></script>
+	<script src="./js/babel.js"></script>
+	<script src="./js/prop-types.js"></script>
+	<script type="text/babel">
+				
+		class Siry extends React.Component {
+		  constructor(props){
+			super(props);
+			this.state={
+				pwd:""
+			}
+			this.handleSubmit = this.handleSubmit.bind(this);
+			this.handleChange = this.handleChange.bind(this);
+		}
+		handleChange(event){
+			//获取输入框的值
+			const pwd = event.target.value;
+			//跟新状态
+			this.setState({
+				pwd
+			});
+		}
+		handleSubmit(event){
+			const name = this.nameinput.value;
+			const {pwd} = this.state;
+			alert(`用户名:${name},密码:${pwd}`);
+			//阻止默认行为
+			event.preventDefault();
+		}
+		  render() {
+			  const str = null;
+			  if(str){
+				  console.log("true");
+			  }else{
+				  console.log("false");
+			  }
+		    return (
+				<form action="" onSubmit={this.handleSubmit}>
+					{/*非受控组件*/}
+					用户名:<input type="text" ref={input => this.nameinput = input}/>
+					{/*受控组件*/}
+					密码:<input type="password" value={this.state.pwd} onChange={this.handleChange}/>
+					<button type="submit" >提交</button>
+				</form>
+		    );
+		  }
+		}
+		
+		ReactDOM.render(
+		<Siry />,
+		document.getElementById("root")
+		);
+	</script>
+	</body>
+	
+</html>

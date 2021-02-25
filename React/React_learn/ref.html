@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+	<script src="./js/React.js"></script>
+	<script src="./js/React-dom.js"></script>
+	<script src="./js/babel.js"></script>
+	<script src="./js/prop-types.js"></script>
+	<script type="text/babel">
+		function CustomTextInput(props) {
+		  return (
+		    <div>
+		      <input ref={props.inputRef} />
+		    </div>
+		  );
+		}
+		
+		class Parent extends React.Component {
+		  constructor(props) {
+		    super(props);
+			this. focusTextInput = this.focusTextInput.bind(this);
+		  }
+		  
+		  focusTextInput(){
+				console.log(this.textInput1);
+			    console.log(this.textInput2);
+			  if (this.textInput1) 
+					this.textInput1.value = 'Siry';
+			if (this.textInput2)
+					this.textInput2.value = 'TiSou1';
+		  }
+		
+		/*  componentDidMount() {
+		    // 组件挂载后，让文本框自动获得焦点
+		    this.focusTextInput();
+		  }*/
+		  render() {
+		    return (
+			<React.Fragment>
+		      <CustomTextInput
+		        inputRef={el => this.textInput1 = el}
+		      />
+			  <CustomTextInput
+			    inputRef={el => this.textInput2 = el}
+			  />
+			  <button onClick={this.focusTextInput}>获取焦点</button>
+			  </React.Fragment>
+		    );
+		  }
+		}
+		ReactDOM.render(<Parent />,document.getElementById("root"));
+	</script>
+	</body>
+	
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .outer{
+            width: 600px;
+            height: 200px;
+            border: 10px red solid;
+        }
+        .inner{
+            /* width: 200px; */
+            height: 200px;
+            margin-left: auto;
+            padding-left: auto;
+            background-color: #bfa;
+        }
+        /*
+            子元素在父元素中,布局必须满足以下等式
+            子元素的
+            margin-left+border-left+padding-left+width+
+            padding-right+border-right+margin-right = 父元素的的width
+
+            过度约束
+            - 这些值没有auto
+                浏览器自动设置margin-right的值使等式成立
+            - 有1个auto
+                自动调整auto
+            - 宽度和边距auto
+                width最大,另一个为0
+            - 3个auto
+            
+         */
+    </style>
+</head>
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+       
+    </div>
+</body>
+</html>

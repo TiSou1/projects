@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="./js/React.js"></script>
+    <script src="./js/React-dom.js"></script>
+    <script src="./js/babel.js"></script>
+    <script type="text/babel">
+        class Siry extends React.Component{
+            constructor(props){
+                super(props);
+            }
+            componentWillMount(){
+                console.log("componentWillMount---组件将要挂在页面的时刻");
+            }
+            componentDidMount(){
+                console.log("componentDidMount---组件挂在完成的时刻");
+            }
+            shouldComponentUpdate(){
+                console.log("shouldComponentUpdate");
+            }
+            render(){
+                 console.log("render----组件挂在中..");
+                 return(
+                         <div>
+                             <h1>Siry</h1>
+                         </div>
+                 );
+            }
+        }
+        ReactDOM.render(<Siry />,
+        document.getElementById("root")
+        );
+    </script>
+</body>
+</html>

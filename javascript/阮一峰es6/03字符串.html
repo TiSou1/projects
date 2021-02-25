@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const {log} = console;
+
+        //1.String.fromCharCode返回unicode对应字符
+        //可接受多个参数
+        log(String.fromCharCode(0x20BB7));
+        // "ஷ"
+
+        //2.String.raw()该方法返回一个斜杠都被转义（即斜杠前面再加一个斜杠）的字符串,往往用于模板字符串的处理方法。
+        log(String.raw`Hi\u000A!`)
+        //// 实际返回 "Hi\\u000A!"，显示的是转义后的结果 "Hi\u000A!"
+
+        //3.codePointAt()返回字符码点
+        log('wang'.codePointAt(1))//参数选择哪一个字符
+
+        //4.字符查找,includes(), startsWith(), endsWith() 返回布尔值
+        //之前用indexOf
+        let  str1 = 'wangtao';
+        log(str1.startsWith('wan'))
+        log(str1.endsWith('tao'))
+        log(str1.includes('t'));
+
+
+        //5.repeat(),返回新字符串,被重复几次,
+        //参数位小数被取整
+        log('wang'.repeat(2));
+        log('wang'.repeat(2.8));
+
+
+        //6.补全padStrat,padEnd()
+        log('x'.padStart(5,'ab'))
+        log('x'.padEnd(5,'ab'))
+
+
+        //7.trim()消去字符串开头与结尾的空格
+        log(' wang tao    '.trim());
+        log(' wang tao    '.trimEnd());
+        log(' wang tao    '.trimStart());
+
+        //8.replaceAll()替换全部满足条件
+        // String.prototype.replaceAll(searchValue, replacement)
+
+
+        //尾调用优化
+
+        function factorial(n, total = 1){
+            if(n === 1)
+                return total;
+            return factorial(n - 1, n * total);
+        }
+
+        factorial(5);
+    </script>
+</body>
+</html>

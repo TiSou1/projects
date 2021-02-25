@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        const { log } = console
+
+        let { foo, baz } = { foo: 'foo', baz: 'baz' }
+        log(foo, baz)
+
+        //默认值在右边的a严格等于undefine才生效
+        let { a = 2, b = 2 } = { a: 1 }
+        log(a, b)
+
+
+        //字符串解构
+        let [x, y, z] = 'xyz'
+        log(x, y, z)
+
+        //函数参数解构
+        function add([x, y]) {
+            return x + y
+        }
+
+        add([1, 2])
+
+        const map = new Map();
+        map.set('first', 'hello');
+        map.set('second', 'world');
+
+        for (let [key, value] of map) {
+            console.log(key + " is " + value);
+        }
+// first is hello
+// second is world
+
+
+    </script>
+</body>
+
+</html>

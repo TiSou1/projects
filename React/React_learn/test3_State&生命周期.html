@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="text/babel">
+			/* function tick(){
+				const element = (
+					<div>
+					<h1>你好React</h1>
+					<h2>it is {new Date().toLocaleString()}</h2>
+					</div>
+				);
+				ReactDOM.render(
+				element,
+				document.getElementById("root"));
+			}
+			setInterval(tick,1000);
+			*/
+		   
+		/*   function Clock(props){
+			   return(
+				 <div>
+					<h1>Hellow,world</h1>
+					<h2>it is {props.date.toLocaleString()}.</h2>
+				 </div>
+			   );
+		   }*/
+		   //函数组件转换为class组件
+		   class Clock extends React.Component {
+			   constructor(props) {
+			       super(props);
+				   this.state = {date:new Date()};
+				   //构造函数是唯一可以给 this.state 赋值的地方：
+			   }
+			   //生命周期方法
+			   componentDidMount(){
+				   //组件渲染到DOM时运行
+				   this.timerID = setInterval(()=>
+				    this.tick(),
+					1000
+					);
+			   }
+			   componentWillUnmount(){
+				  clearInterval(this.timerID); 
+			   }
+			   tick() {
+				   this.setState({date:new Date()
+				   });
+			   }
+			   render() {
+				   return (
+				   <div>
+					   <h1>Hellow ,world</h1>
+					   <h2>it is {this.state.date.toLocaleTimeString()}</h2>
+				   </div>
+				   );
+			   }
+		   }
+		   
+		   
+		   var aa=["Siry",22,"sds"];
+		   class Siry extends React.Component {
+			   constructor(arg) {
+			       super();
+			   }
+			   render(){
+				   return(
+				  <div>
+					  <p>
+					  {aa.map((name)=>{return name})}
+					  </p>
+					  <p>
+						{aa}
+					  </p>
+				  </div>
+					
+				   );
+			   }
+		   }
+			   ReactDOM.render(
+			   <Siry />,
+			   document.getElementById("root")
+			   );
+		  
+		   
+		</script>
+	</body>
+</html>

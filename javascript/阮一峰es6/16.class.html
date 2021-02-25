@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+         - js中,生成实例对象的传统方法是通过构造函数
+         */
+        function Point1(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        Point1.prototype.toStrint = function () {
+            return '(' + this.x + ',' + this.y + ')';
+        }
+        let p = new Point1(1, 2);
+        console.log(p)
+        /*
+        ES6 的class可以看作只是一个语法糖
+        它的绝大部分功能，ES5 都可以做到，新的class写法只是让对象原型的写法更加清晰、更像面向对象编程的语法而已 
+        ES6 的类，完全可以看作构造函数的另一种写法。 
+        */
+        //用class写
+        class Point2 {
+            //构造方法
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            toStrint() {
+                return '(' + this.x + ',' + this.y + ')';
+
+            }
+        }
+        let p2 = new Point2(2, 3);
+        console.log(p2);
+
+        //在类的实例上面调用方法，其实就是调用原型上的方法。
+
+        //Object.assign()可以很方便的向对象添加多个方法
+        Object.assign(Point2.prototype, {
+            toString() { },
+            toValue() { }
+        });
+
+        //prototype对象的constructor()属性，直接指向“类”的本身，
+        Point1.prototype.constructor === Point1 // true
+
+
+        //定义类
+        class Point3 {
+
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            toString() {
+                return '(' + this.x + ', ' + this.y + ')';
+            }
+
+        }
+
+        var point = new Point3(2, 3);
+
+        point.toString() // (2, 3)
+
+        point.hasOwnProperty('x') // true
+        point.hasOwnProperty('y') // true
+        point.hasOwnProperty('toString') // false
+        point.__proto__.hasOwnProperty('toString') // true
+
+        /* x和y都是实例对象point自身的属性（因为定义在this变量上），所以hasOwnProperty()方法返回true，
+        而toString()是原型对象的属性（因为定义在Point类上），所以hasOwnProperty()方法返回false。
+        这些都与 ES5 的行为保持一致。 */
+
+
+        /* 取值函数（getter）和存值函数（setter）  */
+
+        class Myclass {
+            //不写构造函数,默认自动添加空的
+            constructor() { }
+
+            get prop() {
+                return 'getter';
+            }
+
+            set props(value) {
+                console.log('setter:' + value);
+            }
+
+        }
+        let inst = new Myclass();
+        console.log(inst.prop);
+        //存值函数和取值函数是设置在属性的 Descriptor 对象上的。
+
+        /* 属性表达式
+            类的属性名可以采用表达式 */
+        let methodName = 'getArea';
+
+        class Square {
+            constructor(length) {
+                // ...
+            }
+
+            [methodName]() {
+                // ...
+            }
+        }
+
+        /* class表达式 
+            类可以使用表达式来定义
+            Me只在内部可用,若内部未用到,则可省略
+            在外部,这个类只能用MyClass引用。*/
+        const MyClass = class Me {
+            getClassName() {
+                return Me.name;
+            }
+        };
+        //立即执行的类
+        let person = new class {
+            constructor(name) {
+                this.name = name;
+            }
+
+            sayName() {
+                console.log(this.name);
+            }
+        }('张三');
+
+
+        /* 注意
+            - 类和模块内部,默认是严格模式.所以不用use strict来指定
+            - 不存在变量提升(要先定义后使用) 
+            - name属性,输出类名
+            - Generator,在方法之前加上(*)星号
+            - this指向,类的方法内部如果含有this，它默认指向类的实例。单独使用要注意*/
+        class Foo {
+            constructor(...args) {
+                this.args = args;
+            }
+
+            *[Symbol.iterator]() {
+                for (let arg of this.args)
+                    yield arg;
+            }
+        }
+        for (let x of new Foo('hello', 'world'))
+            console.log(x);
+        /*
+        Foo类的Symbol.iterator方法前有一个星号，表示该方法是一个 Generator 函数。
+        Symbol.iterator方法返回一个Foo类的默认遍历器，for...of循环会自动调用这个遍历器。 
+         */
+
+        class Logger {
+            printName(name = 'there') {
+                this.print(`Hello ${name}`);
+            }
+
+            print(text) {
+                console.log(text);
+            }
+        }
+
+        const logger = new Logger();
+        const { printName } = logger;
+        //printName(); // TypeError: Cannot read property 'print' of undefined
+        logger.printName()//正常使用
+        /*
+        printName方法中的this，默认指向Logger类的实例。但是，如果将这个方法提取出来单独使用，
+        this会指向该方法运行时所在的环境（由于 class 内部是严格模式，所以 this 实际指向的是undefined），
+        从而导致找不到print方法而报错。
+
+            - 一个比较简单的解决方法是，在构造方法中绑定this，这样就不会找不到print方法了。
+                class Logger {
+                    constructor() {
+                        this.printName = this.printName.bind(this);
+                }
+                // ...
+                }
+            - 另一种是使用箭头函数
+                - 箭头函数内部的this总是指向定义时所在的对象。上面代码中，箭头函数位于构造函数内部，
+                    它的定义生效的时候，是在构造函数执行的时候。这时，箭头函数所在的运行环境，肯定是实例对象，所以this会总是指向实例对象。
+                class Obj {
+                    constructor() {
+                        this.getThis = () => this;
+                }
+                }
+                const myObj = new Obj();
+                myObj.getThis() === myObj // true
+
+            - 使用Proxy,在获取方法的时候自动绑定this
+                
+         */
+        class Person {
+            printName1 = (name = 'tisou1') => {
+                console.log(`hello+${name}`);
+            }
+        }
+        const ti = new Person();
+        const { printName1 } = ti;
+        printName1()
+
+        //proxy
+        function selfish(target) {
+            const cache = new WeakMap();
+            const handler = {
+                get(target, key) {
+                    const value = Reflect.get(target, key);
+                    if (typeof value !== 'function') {
+                        return value;
+                    }
+                    if (!cache.has(value)) {
+                        cache.set(value, value.bind(target));
+                    }
+                    return cache.get(value);
+                }
+            };
+            const proxy = new Proxy(target, handler);
+            return proxy;
+        }
+
+        //const logger = selfish(new Logger());
+
+
+        /* 静态方法
+            使用关键字static
+            - 如果静态方法中有this,则this指向类,而不是实例
+            - 父类的静态方法,可以被子类继承*/
+        class Foo1 {
+            static classMethod() {
+                return 'hello';
+            }
+        }
+        //直接用类调用,不要用实例调用
+        Foo1.classMethod();
+        class Bar extends Foo1 {
+            //也可用super调用父类的属性和方法
+            static classMethod() {
+                return super.classMethod() + 'too';
+            }
+        }
+        Bar.classMethod()
+
+
+        /* 实例属性的写法
+            - 写在constructor里面的this上面
+            - 定义在类的最顶层 */
+        // class IncreasingCounter {
+        //     constructor() {
+        //         this._count = 0;
+        //     }
+        //     get value() {
+        //         console.log('Getting the current value!');
+        //         return this._count;
+        //     }
+        //     increment() {
+        //         this._count++;
+        //     }
+        // }
+        //*************************
+        class IncreasingCounter {
+            _count = 0;
+            get value() {
+                console.log('Getting the current value!');
+                return this._count;
+            }
+            increment() {
+                this._count++;
+            }
+        }
+
+        /* 静态属性
+           - 静态属性指的是 Class 本身的属性，即Class.propName，而不是定义在实例对象（this）上的属性。
+           - ES6 明确规定， Class 内部只有静态方法，没有静态属性。
+           - 现在有一个提案提供了类的静态属性，写法是在实例属性的前面，加上static关键字。 */
+        class Foo2 {
+
+        }
+        Foo2.prop = 1;
+        console.log(Foo2.prop)
+
+        class Foo3 {
+            static name = 'siry';
+            constructor() {
+                console.log('静态属性name:' + Foo3.name);
+            }
+        }
+        let as = new Foo3();
+
+
+        /* 私有方法和私有属性
+            私有方法和私有属性，是只能在类的内部访问的方法和属性，外部不能访问。
+             ES6 不提供，只能通过变通方法模拟实现。
+            - 用命名的形式加以区分 
+            - 另一种方法就是索性将私有方法移出类，因为类内部的所有方法都是对外可见的。
+            - 还有一种方法是利用Symbol值的唯一性，将私有方法的名字命名为一个Symbol值。*/
+        class Widget {
+
+            // 公有方法
+            foo(baz) {
+                this._bar(baz);
+            }
+
+            // 私有方法
+            _bar(baz) {
+                return this.snaf = baz;
+            }
+
+            // ...
+        }
+        //
+        // class Widget {
+        //     foo(baz) {
+        //         bar.call(this, baz);
+        //     }
+
+        //     // ...
+        // }
+
+        // function bar(baz) {
+        //     return this.snaf = baz;
+        // }
+        //3.
+        const bar = Symbol('bar');
+        const snaf = Symbol('snaf');
+
+        class myClass {
+
+            // 公有方法
+            foo(baz) {
+                this[bar](baz);
+            }
+
+            // 私有方法
+            [bar](baz) {
+                return this[snaf] = baz;
+            }
+
+            // ...
+        };
+        const inst2 = new myClass();
+
+        console.log(Reflect.ownKeys(myClass.prototype))
+        //私有属性的提案 在属性名前面加上#号(只能在类内部使用)
+        //也可以用#写私有方法
+        class Foo4 {
+            #a;
+            #b;
+            constructor(a, b) {
+                this.#a = a;
+                this.#b = b;
+            }
+            #sum() {
+                return this.#a + this.#b;
+            }
+            static #print() {
+                console.log('私有方法...');
+            }
+            printSum() {
+                console.log(this.#sum());
+            }
+        }
+        let ff = new Foo4(1, 2)
+        Foo4.print()
+        ff.printSum()//3
+
+
+        /* new.target属性
+            该属性一般用在构造函数之中，返回new命令作用于的那个构造函数
+            如果构造函数不是通过new命令或Reflect.construct()调用的，new.target会返回undefined，因此这个属性可以用来确定构造函数是怎么调用的。 */
+
+        function Person(name) {
+            if (new.target !== undefined) {
+                this.name = name;
+            } else {
+                throw new Error('必须使用 new 命令生成实例');
+            }
+        }
+
+        // 另一种写法
+        function Person(name) {
+            if (new.target === Person) {
+                this.name = name;
+            } else {
+                throw new Error('必须使用 new 命令生成实例');
+            }
+        }
+
+        var person = new Person('张三'); // 正确
+        var notAPerson = Person.call(person, '张三');  // 报错
+
+        //子类继承父类时，new.target会返回子类。
+        class Rectangle {
+            constructor(length, width) {
+                console.log(new.target === Rectangle);
+                // ...
+            }
+        }
+
+        class Square extends Rectangle {
+            constructor(length, width) {
+                super(length, width);
+            }
+        }
+
+        var obj = new Square(3); // 输出 false
+    </script>
+</body>
+
+</html>

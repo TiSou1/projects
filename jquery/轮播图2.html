@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.clearfix::before,
+			.clearfix::after{
+				content: "";
+				clear: both;
+				display: table;
+			}
+			#main{
+				position: relative;
+				width: 952px;
+				height: 200px;
+				margin: 100px auto;
+				/* background-color: #ADFF2F; */
+				/* overflow: hidden; */
+			}
+			#imgList{
+				position: relative;
+				width: 100%;
+				height: 100%;						
+				margin: 0 auto;				
+			}
+			#imgList ul{
+				position: relative;
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
+			}
+			#imgList li{		
+				position: absolute;
+				/* margin-right: 8px; */
+				list-style: none;	
+				transition:all 0.3s linear 0s;
+			}
+			#imgList li:hover{
+				cursor: pointer;
+			}
+			.li1{
+				transform: scale(0.85);
+				transform-origin: 0% 100%;
+				z-index: 2;
+			}
+			.li2{
+				transform: translateX(280px) ;	
+				transform-origin: 0% 100%;
+				z-index: 10;
+			}
+			.li3{
+				transform: translateX(560px) scale(0.85);
+				transform-origin: 100% 100%;
+				z-index: 2;
+			}
+			.li4{
+				transform: translateX(840px) scale(0.85);
+				transform-origin: 100% 100%;
+				z-index: 1;
+			}
+			.li5{
+				transform: translateX(1120px) scale(0.85);
+				transform-origin: 100% 100%;
+			}
+			.li6{
+				transform: translateX(1400px)scale(0.85);
+				transform-origin: 100% 100%;
+			}
+			.li7{
+				transform: translateX(1680px)scale(0.85);
+				transform-origin: 100% 100%;
+			}
+			.li8{
+				transform: translateX(1960px)scale(0.85);
+				transform-origin: 100% 100%;
+			
+			}
+			#imgList img{
+				width: 392px;
+				height: 200px;
+			}
+			#btn{
+				position: absolute;
+				width: 1100px;
+				height: 100px;
+				top: 50%;
+				margin-top: -40px;
+				left: -74px;
+				/* background-color: rgba(60,160,255,0.1); */
+				font-size: 50px;
+			}
+			#btn span{
+				font-size: 100px;
+				line-height: 100px;
+				text-align: center;
+			}
+			#btn span:hover{
+				cursor: pointer;
+			}
+			#btn .btn-left{
+				float: left;
+			}
+			#btn .btn-right{
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<div id="imgList">
+				<ul>
+					<li class="li1"><img src="img/000.jpg"/></li>
+					<li class="li2"><img src="img/001.jpg"/></li>
+					<li class="li3"><img src="img/002.jpg"/></li>
+					<li class="li4"><img src="img/003.jpg"/></li>
+					<li class="li5"><img src="img/009.jpg"/></li>
+					<li class="li6"><img src="img/010.jpg"/></li>
+					<li class="li7"><img src="img/017.jpg"/></li>
+					<li class="li8"><img src="img/018.jpg"/></li>
+				</ul>
+			</div>
+			<div id="btn">
+				<span class="btn-left"><</span>
+				<span class="btn-right">></span>
+			</div>
+		</div>
+		<script src="./js/jQuery.js" ></script>
+		<script type="text/javascript">
+			$().ready(()=>{
+				const lists = ['li1','li2','li3','li4','li5','li6','li7','li8'];
+				const imgList = $('#imgList li');
+				console.log(imgList,imgList[0]);
+				//console.log(imgs);
+				
+			    const btn_left = $('.btn-left');
+				const btn_right = $('.btn-right');
+				//console.log(btn_left[0]);
+				btn_left.click(()=>{
+					console.log("右移...");
+					//将第一个放到最后一个
+					lists.push(lists[0]);
+					//lists.splice(lists.length-1,0,lists[0]);在最后一个位置处开始删除0个元素,插入lists[0]
+					//删除第一个
+					lists.shift();
+					console.log(lists);
+					for(let i=0;i<lists.length;i++){
+						imgList.eq(i).attr('class',lists[i])//imgList.eq(i)依然为jQuery对象
+						//imgList[i].setAttribute('class',lists[i]);//imglist[i]为dom对象
+					}
+				});
+				
+				btn_right.click(()=>{
+					console.log("左移...");
+					lists.unshift(lists[lists.length-1]);//将最后一个
+					lists.pop();//删除最后一个
+					console.log(lists);
+					for(let i=0;i<lists.length;i++){
+						$(imgList[i]).attr("class",lists[i]);
+						//imglist[i]为dom对象 ,需要转换为jQuery对象
+						//imgList[i].setAttribute("class",lists[i]);
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

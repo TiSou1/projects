@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="box" class="container"></div>
+		<script>
+			//打印出当前的URl,设置其值会跳转到对应页面
+			console.log(window.location);
+			//alert('nihao');
+			
+			//document表示在窗口中的文档
+			let box = document.getElementById('box');
+			let time = document.createTextNode(new Date().toString());
+			box.appendChild(time);
+			box.className = 'container jk'
+			//修改元素样用box.style.属性值
+			//修改类box.classNane = 'yellow'
+			
+			//表示在窗口中文档内容稳定(加载完成)时才可以操作它们
+			window.onload = ()=>{}
+			
+			document.write('asdas');
+			
+			/*
+			defer和async属性都像在告诉浏览器链接进来的脚本不会使用document.write()，
+			也不会生成文档内容，因此浏览器可以在下载脚本时继续解析和渲染文档。
+			defer属性使得浏览器延迟脚本的执行，直到文档的载入和解析完成，并可以操作。
+			async属性使得浏览器可以尽快地执行脚本，而不用在下载脚本时阻塞文档解析。
+			如果<script>标签同时有两个属性，同时支持两者的浏览器会遵从async属性并忽略defer属性。
+
+			*/
+		</script>
+	</body>
+</html>

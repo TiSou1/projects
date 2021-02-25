@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		<!-- <script src="https://cdn.bootcss.com/babel-polyfill/7.6.0/polyfill.js"></script> -->
+	</head>
+	<body>
+		<div id="container"></div>
+		<script type="text/babel">
+			
+		  function F1(props){
+			    return <h1>Hello,{props.name},{props.age}</h1>;
+		   }
+		  
+		  function App () {
+			  return (
+				<div>
+					<F1 name="Sara" age="20"/>
+					<F1 name="Cahal" age="18"/>
+					<F1 name="Edite" age="22"/>
+				{/*asdas  注释*/}
+				</div>
+			  );
+		  }
+		    
+			//const element=<F1 name="Siry" />;
+			ReactDOM.render(
+			<App />,
+			document.getElementById("container")
+			);
+			
+			//提取组件
+			function Comment(props) {
+				return (
+					<div className="Comment">
+						<UserInfo user={props.author} />
+					</div>
+				);
+			}
+			//提取Avatar组件
+				function Avatar(props) {
+					return(
+						<img className="Avatar"
+						src={props.user.avatarUrl}
+						alt={props.user.name}
+						//给它的 props 起了一个更通用的名字：user
+						/>
+					);
+				}
+			//提取UserInfo组件
+				function UserInfo(props){
+					return (
+						<div className="UserInfo">
+							<Avatar user={props.user} />
+						</div>
+					);
+				}
+			
+			
+		</script>
+	</body>
+</html>

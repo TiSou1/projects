@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			
+			//1.XMLHttpRequest
+			let request = new XMLHttpRequest();
+			request.open('get',url);
+			request.responseType = 'text';//不写默认是文本
+			//进行处理
+			request.onload = function(){
+				let data = request.response;
+			}
+			
+			request.send();//发送请求
+			
+			
+			//2.fetch
+			//写法1
+			fetch(url).then(function(response){
+				response.text().then(function(text){
+					let data = text;
+				})
+			})
+			//写法二
+			fetch(url).then(function(response){
+				return response.text()
+			}).then(function(text){
+				let data = text
+			})
+			
+		</script>
+	</body>
+</html>

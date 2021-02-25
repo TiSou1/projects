@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*
+            line-height:2;为字体大小2倍 
+         */
+        .box1{
+            /* height: 200px; */
+            font:bold italic 50px/2 微软雅黑;
+            line-height: 200px;
+            border: 1px solid red;
+        }
+        .box2{
+            width: 800px;
+            border: 1px red solid;
+            text-align: center;
+            font-size: 50px;
+        }
+        /*
+        text-align
+            justify 两端对齐 
+         */
+         /*
+         子元素和父元素字体大小不一样时用垂直对齐 
+          */
+         span{
+             font-size: 20px;
+             border: 1px solid blue;
+             vertical-align: top;
+         }
+    </style>
+</head>
+<body>
+    <div class="box1">小说的话</div>
+
+    <div class="box2">你好,asdafg<span>萨芬</span>sd你是我的朋友吗?</div>
+</body>
+</html>

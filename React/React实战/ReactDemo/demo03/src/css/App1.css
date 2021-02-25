@@ -1,0 +1,17 @@
+.main{
+    width: 800px;
+    margin: 0 auto;
+}
+.search{
+    height: 150px;
+    background-color: aliceblue; 
+    padding-left: 50px;
+}
+h2{
+    padding-top: 30px;
+}
+.card{
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid rgba(150, 150, 50, 0.5);
+}

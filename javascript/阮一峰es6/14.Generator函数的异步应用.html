@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        异步编程对 JavaScript 语言太重要。JavaScript 语言的执行环境是“单线程”的，
+        如果没有异步编程，根本没法用，非卡死不可。
+        
+        */
+        /* Alt + shift + A 快注释 */
+        /*
+        传统异步方式
+           - 回调函数
+           - 事件监听
+           - 发布/订阅
+           - Promise对象
+   
+       Generator 函数将 JavaScript 异步编程带入了一个全新的阶段
+       所谓"异步"，简单说就是一个任务不是连续完成的，可以理解成该任务被人为分成两段，先执行第一段，然后转而执行其他任务，等做好了准备，再回过头执行第二段。
+   
+       比如，有一个任务是读取文件进行处理，任务的第一段是向操作系统发出请求，要求读取文件。然后，程序执行其他任务，等到操作系统返回文件，再接着执行任务的第二段（处理文件）。这种不连续的执行，就叫做异步。
+   
+       相应地，连续的执行就叫做同步。由于是连续执行，不能插入其他任务，所以操作系统从硬盘读取文件的这段时间，程序只能干等着。
+         */
+
+        /*
+        回调函数 
+         */
+        fs.readFile('/etc/passwd', 'utf-8', function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        });
+        /* Promise 
+            promise就是用来解决这个问题而提出的
+            它不是新的语法功能，而是一种新的写法，允许将回调函数的嵌套，改成链式调用。*/
+        fs.readFile(fileA, 'utf-8', function (err, data) {
+            fs.readFile(fileB, 'utf-8', function (err, data) {
+                // ...
+            });
+        });//"地狱回调"
+
+        var readFile = require('fs-readfile-promise');
+
+        readFile(fileA)
+            .then(function (data) {
+                console.log(data.toString());
+            })
+            .then(function () {
+                return readFile(fileB);
+            })
+            .then(function (data) {
+                console.log(data.toString());
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+
+        /* Generator 函数
+            传统的编程语言，早有异步编程的解决方案（其实是多任务的解决方案）。
+            其中有一种叫做"协程"（coroutine），意思是多个线程互相协作，完成异步任务。
+            - 流程
+                第一步，协程A开始执行。
+                第二步，协程A执行到一半，进入暂停，执行权转移到协程B。
+                第三步，（一段时间后）协程B交还执行权。
+                第四步，协程A恢复执行。
+                有点像线程
+            上面流程的协程A，就是异步任务，因为它分成两段（或多段）执行。
+        */
+        //举例来说，读取文件的协程写法如下。
+        function* asyncJob() {
+            // ...其他代码
+            var f = yield readFile(fileA);
+            // ...其他代码
+        }
+        //函数asyncJob是一个协程，它的奥妙就在其中的yield命令。它表示执行到此处，执行权将交给其他协程。也就是说，yield命令是异步两个阶段的分界线。
+        //协程遇到yield命令就暂停，等到执行权返回，再从暂停的地方继续往后执行
+
+        //异步任务的封装
+        // let fetch = require('node-fetch');
+        function* gen() {
+            let url = '...';
+            //fetch返回promise对象
+            let result = yield fetch(url);
+            console.log(result.bio);
+        }
+        let g = gen();
+        //启动遍历器对象
+        let result = g.next();
+
+        result.value.then(function (data) {
+            return data.json();
+        }).then(function (data) {
+            g.next(data);
+        })
+
+
+        /*
+        Thunk函数 
+         Thunk 函数是自动执行 Generator 函数的一种方法。 
+         编译器的“传名调用”实现，往往是将参数放到一个临时函数之中，
+         再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
+         JavaScript 语言是传值调用
+         
+         JavaScript 语言的 Thunk 函数
+            - 在 JavaScript 语言中，Thunk 函数替换的不是表达式，
+                而是多参数函数，将其替换成一个只接受回调函数作为参数的单参数函数。
+         */
+        function f1(m) {
+            return 2 * m;
+        }
+        f1(x + 5);
+        //等同于
+        let thunk = function () {
+            return x + 5;
+        }
+        function f2(thunk) {
+            return thunk() * 2;
+        }
+        f2(thunk);
+
+        //js thunk函数
+        //正常版本
+        // fs.readFile(fileName, callback);
+
+        //Tunk版本
+        let thunk = function (fileName) {
+            return function (callback) {
+                return fs.readFile(fileName, callback);
+            }
+        }
+
+        let readFileThunk = thunk(fileName);
+        readFileThunk(callback);
+
+
+
+        /*
+        Generator 函数的流程管理 
+            - Thunk 函数现在可以用于 Generator 函数的自动流程管理。 
+         */
+
+        var fs = require('fs');
+        var thunkify = require('thunkify');
+        var readFileThunk = thunkify(fs.readFile);
+
+        var gen = function* () {
+            var r1 = yield readFileThunk('/etc/fstab');
+            console.log(r1.toString());
+            var r2 = yield readFileThunk('/etc/shells');
+            console.log(r2.toString());
+        };
+        //手动执行
+        var g = gen();
+
+        var r1 = g.next();
+        r1.value(function (err, data) {
+            if (err) throw err;
+            var r2 = g.next(data);
+            r2.value(function (err, data) {
+                if (err) throw err;
+                g.next(data);
+            });
+        });
+        //可以发现 Generator 函数的执行过程，其实是将同一个回调函数，反复传入next方法的value属性
+
+        //Thunk函数执行
+        function run(fn) {
+            let gen = fn();
+
+            function next1(err, data) {
+                let result = gen.next(data);
+                if (result.done)
+                    return;
+                result.value(next1);
+            }
+
+            next();
+        }
+        function* g() { }
+        run(g);
+
+        //co 可以自动执行 Generator 函数
+        //（1）回调函数。将异步操作包装成 Thunk 函数，在回调函数里面交回执行权。
+
+        //（2）Promise 对象。将异步操作包装成 Promise 对象，用then方法交回执行权。
+
+
+
+        /*
+        基于Promise对象的自动执行
+
+         */
+        var fs = require('fs');
+
+        var readFile = function (fileName) {
+            return new Promise(function (resolve, reject) {
+                fs.readFile(fileName, function (error, data) {
+                    if (error) return reject(error);
+                    resolve(data);
+                });
+            });
+        };
+
+        var gen = function* () {
+            var f1 = yield readFile('/etc/fstab');
+            var f2 = yield readFile('/etc/shells');
+            console.log(f1.toString());
+            console.log(f2.toString());
+        };
+        //手动执行
+        var g = gen();
+
+        g.next().value.then(function (data) {
+            g.next(data).value.then(function (data) {
+                g.next(data);
+            });
+        });
+        //自动执行
+        function run(gen) {
+            var g = gen();
+
+            function next(data) {
+                var result = g.next(data);
+                if (result.done) return result.value;
+                result.value.then(function (data) {
+                    //result.value就是返回的promise对象实例.然后调用then
+                    next(data);
+                });
+            }
+
+            next();
+        }
+
+        run(gen);
+    </script>
+</body>
+
+</html>

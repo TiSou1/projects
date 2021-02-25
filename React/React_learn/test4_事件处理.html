@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#root{
+				width: 200px;
+				height: 200px;
+				/* background-color: blue; */
+				border: 1px solid green;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		<script type="text/babel">
+		class Toggle extends React.Component{
+				constructor(props) {
+				    super(props);
+					this.state = {isToggleOn: true};
+					this.handleClick = this.handleClick.bind(this);
+					//绑定事件
+				}
+				handleClick() {
+					this.setState(state => ({
+						isToggleOn: !state.isToggleOn,
+						//点击 取反
+					}));
+				}
+				
+				render() {
+				    return (
+					 //<button onClick={(e)=> this.handleClick(e)}>
+				       <button onClick={this.handleClick}>
+					   {/*主*/}
+				        {this.state.isToggleOn ? 'ON' : 'OFF'}
+				      </button>
+				    );
+				  }
+				}
+			ReactDOM.render(
+			  <Toggle />,
+			  document.getElementById('root')
+			);
+			
+			
+			
+		</script>
+	</body>
+</html>

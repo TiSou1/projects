@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			let a = 10;
+			let b = true;
+			let c = 'aa';
+			let d = null;
+			let e;
+			console.log(a+b+c);//11aa
+			console.log(a+c+b);//10aatrue
+			console.log(b+c+a);//trueaa10
+			console.log(b+a+c);//11aa
+			console.log(c+b+a);//aatrue10
+			console.log(c+a+b);//aa10true
+			console.log(a+d);//10
+			console.log(a+e);//NaN
+			console.log(c+e);//aaundefine
+			console.log(c+d);
+			console.log(d+e);//NaN
+			
+			var a1 = [1,'a', 2, 3];
+			let ccc = a1.filter(item=>{
+				return typeof item == 'number';
+			})
+			console.log(ccc);
+			
+			
+			let ddd = a1.every(item=>{
+				return typeof item == 'number';
+			})
+			console.log(ddd);
+			
+			let eee = a1.some(item=>{
+				return typeof item == 'number';
+			})		
+			console.log(eee);
+	
+
+
+	
+		</script>
+	</body>
+</html>

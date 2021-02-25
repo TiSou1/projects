@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#main{
+				/* border: 1px solid red; */
+				width: 100%;
+				height: 800px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			
+		</div>
+		<script type="text/javascript">
+			var div1=document.getElementById("main");
+			var list=new Array("富强","民主","文明","和谐","自由","平等","公正","法治","爱国","敬业","诚信","友善");
+			var color_list=["#ff0000",'#00ff00','#0000ff'];
+			var index=0;
+			div1.onclick=function(e){
+				// div1.innerHTML="";
+				var span=document.createElement("span");
+				// var text=document.createTextNode(list[index]);
+				// span.appendChild(text);
+				/*   screen相对于屏幕 client相对浏览器窗口 page相对文档
+				*/
+				span.style.position="absolute";
+				span.style.left=e.pageX+"px";
+				span.style.top=e.pageY+"px";
+				span.style.fontSize
+				//要显示的字
+				span.innerText=list[index];
+				//产生随机颜色
+				span.style.color=color_list[Math.floor(Math.random()*3)];
+			
+				index=(++index)%list.length;
+			
+				div1.appendChild(span);//添加到div中
+			
+				span.animate([
+			  // keyframes
+			  { transform: 'translateY(0px)',opacity:'1',fontSize:'15px'}, 
+			  { transform: 'translateY(-100px)',opacity:'0',fontSize:'30px'},
+			], { 
+			  // timing options
+			  duration: 1500,
+			//  iterations:Infinity //无限循环
+			});
+			//延迟1.5s后执行清除span节点
+			setTimeout(function(){div1.removeChild(span);},1500);
+			}
+		</script>
+	</body>
+</html>

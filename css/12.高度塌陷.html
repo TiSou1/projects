@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*
+        BFC(Block Formatting COntext)块级格式化环境
+            - 隐藏属性,可以为元素开启BFC
+            - 开启BFC后元素的特点
+                - 不会被浮动元素覆盖
+                - 子元素和父元素的外边距不会重叠
+                - 可以包裹浮动的子元素
+            
+            -开启BFC(间接)
+                - 设置浮动
+                - 将元素设置为行内块元素(inline-block)
+                - 元素设置为非visble(常用overflow:hidden)
+                 
+         */
+         /*
+            解决高度塌陷
+            .box::after{
+                content:'';
+                display:block;
+                clear:both;
+            } 
+
+            .clearfix不仅解决高度塌陷也解决了外边距重叠
+            .clearfix::before,
+            .clearfix::after{
+                content:'';
+                display: table;
+                clear:both;
+            }
+          */
+        .outer{
+         /*   width: 200px;
+            height: 200px; */
+            background-color: red;
+            border: 1px solid red;
+        }
+		.outer::after{
+			content: '';
+			display: block;
+			clear: both;
+		}
+        .inner{
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+            float: left;
+            margin-top: 100px;
+            font-family: Microsoft YaHei, Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="outer">
+        <div class='inner'>健康更大的</div>
+    </div>
+</body>
+</html>

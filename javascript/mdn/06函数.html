@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<div>函数</div>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// "use strict";
+		let o = {
+			m:function(){
+				let self = this;
+				console.log(this===0);
+				f();
+				
+				function f(){
+					console.log(this===o);
+					console.log(self===o);
+				}
+			}
+		}
+		o.m();//false false true
+		
+		let a;
+		console.log(a = a || []);
+		
+		
+		function f(x,y,z){
+			arguments[0] = '修改了';//x的值跟着也修改,但是在严格模式下不会
+			console.log(arguments[0]);
+			console.log(x);//参数个数			
+		}
+		f(1,2,3,4,5);//f中前三个用x,yz引用和arguments[1-3],后面两个要用arguments[1-3]引用
+		
+		//es6写法
+		function f1(...args){
+		//	console.log(args)
+			return f1.count++;
+		}
+		f1.count = 0;
+		for(let i=0;i<2;i++)
+			console.log(f1());
+		
+		f1(1,2,3,4,5,6,);
+		
+		// 闭包
+		
+		var scope = 'global scope';//全局变量
+		function checkscope(){
+			var scope = 'local scope';//局部变量
+			function f(){
+				return scope;
+			}
+			return f;
+		}
+		console.log(checkscope()());//返回local scope
+		//我们是现在在外部访问函数内部的变量
+		
+		
+		
+		function counter(){
+			let n = 0;
+			return {
+				count:function(){return n++;},
+				reset:function(){n=0;}
+			}
+		}
+		/**
+		 * 每次调用counter()都会创建一个新的作用域链,和一个新的私有变量(n),
+		 * 调用几次counter()就会创建几次计数器对象
+		*/
+		//c,d互不干扰
+		let c= counter(),d = counter();
+		c.count();//0 n=1
+		d.count();//0 n=1
+		c.reset();//n=0
+		c.count();//0
+		d.count();//1
+		
+		
+		
+		function counter2(n){
+			return{
+				get count(){
+					return n++;
+				},
+				set count(m){
+					if(m>n)
+						n=m;
+					else
+						throw Error('count can only be set to larger value');
+				}
+			}
+		}
+		
+		let e= counter2(1000);
+		e.count;//调用get访问器
+		e.count;
+		e.count = 2000;//set访问器
+		e.count;//n = 2001
+		//e.count = 2000;//报错赋值小了
+		
+		
+		/**
+		 * 在同一个作用域链中定义的多个闭包,共享同样的私有变量和变量*/
+		//创建多个闭包,常见问题
+		function countsfuncs(){
+			let func=[];
+			for(var i=0;i<10;i++)//i用var定义是,所有的值都为左后的i=10
+				func[i] = function(){return i;}
+			return func;
+		}
+		let func = countsfuncs();
+		console.log(func[5]());
+		
+		
+		//bind()
+			function f(y){//待绑定函数
+				return this.x + y;
+			}
+			var oo = {x:1};//将要绑定的对象
+			var g = f.bind(oo);//通过调用g(x)调用oo.f(x);
+			console.log(g(2));
+			
+		//手动实现bind()方法
+		function bind(f,o){//f为方法,o为对象
+			if(f.bind)//存在,直接返回
+				retunn f.bind(o);
+			else//否则手动绑定
+				retunn function (){
+					return f.apply(o,arguments);
+				}
+		}
+				
+	</script>
+</html>

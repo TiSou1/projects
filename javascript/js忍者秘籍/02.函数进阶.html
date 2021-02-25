@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id='test'>测试</button>
+    <button id='test2'>测试2</button>
+
+    <script >
+        function assert(condition,msg){
+            if(!condition)
+                console.log(msg)
+        }
+        //.js不能省略
+       // import assert from './js/assert.js';
+        /* 理解函数调用
+            - 函数中两个隐藏的参数,arguments,this
+                参数this表示被调用函数的上下文,
+                argumnets参数表示调用过程中传递的参数
+            - 调用函数的不同方式
+            - 处理函数上下文问题  
+            
+            
+            为什么this参数表示函数上下文？
+            ● 函数（function）和方法（method）之间有什么区别？
+            ● 如果一个构造函数显式地返回一个对象会发生什么？*/
+
+        //例:使用argumnets参数
+        function whatever(a,b,c){
+            assert(a === 1,'The value of a is 1');
+            assert(b === 2,'The value of b is 2');
+            assert(c === 3,'The value of c is 3');
+
+            assert(arguments[0] === 1,'The value of arguments[0] is 1');
+            assert(arguments[1] === 2,'The value of arguments[1] is 1');
+            assert(arguments[2] === 3,'The value of arguments[2] is 1');
+
+            assert(arguments.length === 5,'we`ve passed in 5 parameters');
+            
+        }
+        whatever(2,1,4,5,3);
+        //arguments是类数组的属性,不能直接使用数组的方法,可以
+        //改变arguments的值,形参数的也会改变
+        //argument[0] =2 则上面的a也为2.严格模式下改变auguments的值,形参不会改变
+        
+
+        //利用剩余参数重写上面
+        function wharever2(...arr){
+            //arr是一个数组
+            console.log(arr);
+        }
+        wharever2(1,2,3,4,5);
+
+
+        /* 函数上下文this
+            this参数的指向不仅是由定义函数的方式和位置决定的，同时还严重受到函数调用方式的影响 
+             function skulk(name){}
+            function Ninja(name){}
+            //作为函数调用
+            skulk('Hattori');
+            (function(who){return who;})('Hattori');
+            let ninja = {
+                skulk:function(){}
+            }
+
+            ninja.skulk('Hattori');//作为对象方法调用
+            ninja = new Ninja('Hattori');//作为构造函数用
+
+            skulk.apply(ninja,['Hattori']);
+            skulk.call(ninja,'Hattori');
+        */
+
+        //1.作为函数直接调用
+            //如果一个函数没有作为方法、构造函数或者通过apply和call调用的话，我们就称之为作为函数被直接调用。
+        //例:函数调用方式
+        //这里使用了type='module',默认开启严格模式
+        function ninja1(){
+            return this;
+        }
+        function samuria(){
+            'use strict';
+            return this;
+        }
+        assert(ninja1() === window,'ninja1,this不是window');
+        assert(samuria() === undefined,'samuria,this不是window');
+
+        //2.作为方法,关联在一个对象上
+        //例:函数调用和方法调用的差别(非严格模式)
+        function whatsMyContext(){
+            return this;
+        }
+        //作为函数被调用,上下文为window
+        assert(whatsMyContext() === window,'this不指向window 1');
+
+        //使用变量getMythis,this指向window
+        let getMyThis = whatsMyContext;
+        assert(getMyThis() === window,'this不指向window 2');
+
+        //作为对象的方法,指向当前对象
+        //通过对象的方法调用,this指向该方法所在的对象
+        let ninja2 = {
+            getMyThis:whatsMyContext,
+        }
+        assert(ninja2.getMyThis() === ninja2,'this不指向window 3');
+
+        let ninja3 = {
+            getMyThis:whatsMyContext,
+        }
+        assert(ninja3.getMyThis() === ninja3,'this不指向window 4');
+
+        //3.作为构造函数
+        //构造函数的强大功能
+        //例:使用构造函数来实现通用对象
+        function ninja4(){
+            this.skulk = function(){
+                return this;
+            }
+        }
+        let n1 = new ninja4();
+        let n2 = new ninja4();
+        console.log(n1.skulk() === n1);//true
+        console.log(n2.skulk() === n2);//true
+        /* new调用函数会触发以下几个动作
+            - 创建一个新的空对象
+            - 该对象作为this参数传递给构造函数，从而成为构造函数的函数上下文。
+            - 新构造的对象作为new运算符的返回值（除了我们很快要提到的情况之外）。
+            上面的代码
+                使用new关键字来调用函数,从而创建一个空对象
+                新的空对象被设置为该函数的上下文(this)
+                为该对象添加一个方法,这里为skulk
+                新构造的对象作为函数的返回值
+            */
+        function Fn(){
+             this.name = 'siry';
+            return this;
+        }
+        let ff = new Fn();
+        console.log(ff);
+
+        //例:返回原始值的构造函数
+        function Ninja1(){
+            this.skulk = function(){
+                return this;
+            }
+            return 1;
+        }
+        console.log(Ninja1())//作位函数调用返回1
+        let n3 = new Ninja1();
+        console.log(typeof n3 === 'object');//true
+        console.log(typeof n3.skulk === 'function')//true
+
+        //例:显式返回对象值的构造函数
+        let puppet = {
+            rules:false,
+        }
+        function Emperor(){
+            this.rules = true;
+            return puppet;
+        }
+        //变量emperor的值为构造函数返回的对象,而不是new表达式返回的对象
+        let emperor = new Emperor();
+        console.log(emperor === puppet)//true
+        console.log(emperor.rules)//false
+        /*总结: 
+            如果构造函数返回一个对象，则该对象将作为整个表达式的值返回，而传入构造函数的this将被丢弃。
+            ● 但是，如果构造函数返回的是非对象类型，则忽略返回值，返回新创建的对象。 */
+
+        //4.通过call,apply,bind
+       //例:为函数绑定特定的上下文
+        function Button(){
+            this.clicked = false;
+            this.click = function(){
+                this.clicked = true;
+                console.log(this)//指向ele元素
+                console.log(button.clicked);//false
+            }
+        }
+        let button = new Button();
+        let ele = document.getElementById('test');
+        ele.addEventListener('click',button.click);
+        //上下文编程button对象,没有设置为ele身上
+
+        //例:使用apply和call来设置上下文
+        function juggle(){
+            let result = 0;
+            for(let n=0;n<arguments.length;n++){
+                result += arguments[n];
+            }
+            this.result = result;
+        }
+        let nin1 = {};
+        let nin2 = {};
+
+        
+        //nin1和nin2，我们将使用这两个对象作为函数上下文
+        juggle.apply(nin1,[1,2,3,4]);
+        juggle.call(nin2,5,6,7,8);
+
+        console.log(nin1.result);//10
+        console.log(nin2.result);//26
+
+
+
+        /* 实现forEach()迭代方法展示如何设置函数上下文 */
+        function forEach(list, callback){
+            for(let n = 0; n < list.length; n++){
+                callback.call(list[n], n);//当前的遍历到的元素作为函数上下文调用回调函数
+
+            }
+        }
+        let weapons = [
+            {type:'shuriken'},
+            {type:'katana'},
+            {type:'nunchucks'},
+        ]
+        forEach(weapons, function(index){
+            console.log(this);
+        })
+
+        /* 使用箭头函数绕过函数上下文
+            箭头函数没有单独的this值。箭头函数的this与声明所在的上下文的相同 */
+        
+            //例:使用箭头函数解决回调函数上下文问题
+            function Button1(){
+                this.clicked = false;
+                this.click = ()=>{
+                    this.clicked = true;
+                    console.log(this);//指向新创建的button1对象
+                    console.log(button1.clicked);
+                }
+            }
+            let button1 = new Button1();
+            let elem = document.getElementById('test');
+            elem.addEventListener('click',button1.click);
+
+            /* 箭头函数与对象字面量 */
+            console.log(this)//window
+            let button2 = {
+                clicked:false,
+                click:()=>{
+                    this.clicked = true;
+                    console.log(button2.clicked);//false
+                    console.log(this)//window
+                    console.log(window.clicked);//true
+                }
+            }
+            let elem2 = document.getElementById('test2');
+            elem2.addEventListener('click',button2.click);
+            /*
+                上面:
+                    全局代码的this指向 window对象
+                    button2对象字面量的click属性是箭头函数,箭头函数在创建的时候确定了this的指向,
+                     button2对象字面量在全局代码中定义,因此箭头函数的this与全局代码的this指向一致,都指向window
+                这个可能就是箭头函数的副作用
+             */
+
+
+             /* 使用bind()方法
+                函数还可访问bind方法创建新函数。无论使用哪种方法调用，
+                bind方法创建的新函数与原始函数的函数体相同，新函数被绑定到指定的对象上 */
+            //172行的代码中,使用bind()
+            //elem.addEventListener('click',button.click.bind(button));
+            /*
+            以上将elem的点击事件的回调函数的this绑定到button对象上(无论如何调用)
+            ，调用bind方法不会修改原始函数，而是创建了一个全新的函数： 
+             */
+
+
+
+             /*
+             总结:
+             ● 当调用函数时，除了传入在函数定义中显式声明的参数之外，同时还传入两个隐式参数：arguments与this。- arguments参数是传入函数的所有参数的集合。
+                具有length属性，表示传入参数的个数，通过arguments参数还可获取那些与函数形参不匹配的参数。
+                在非严格模式下，arguments对象是函数参数的别名，修改arguments对象会修改函数实参，
+                可以通过严格模式避免修改函数实参。
+                - this表示函数上下文，即与函数调用相关联的对象。函数的定义方式和调用方式决定了this的取值。
+             ● 函数的调用方式有4种。
+                - 作为函数调用：skulk()。
+                - 作为方法调用：ninja.skulk()。
+                - 作为构造函数调用：new Ninja()。
+                - 通过apply与call方法调用：skulk.apply(ninja)或skulk.call(ninja)。
+             ● 函数的调用方式影响this的取值。
+                - 如果作为函数调用，在非严格模式下，this指向全局window对象；在严格模式下，this指向undefined。
+                - 作为方法调用，this通常指向调用的对。- 作为构造函数调用，this指向新创建的对象。
+                - 通过call或apply调用，this指向call或apply的第一个参数。
+             ● 箭头函数没有单独的this值，this在箭头函数创建时确定。
+             ● 所有函数均可使用bind方法，创建新函数，并绑定到bind方法传入的参数上。被绑定的函数与原始函数具有一致的行为。 
+              */
+
+            console.log(new Date().getTime())
+    </script>
+</body>
+</html>

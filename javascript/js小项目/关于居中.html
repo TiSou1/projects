@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+				font:normal normal 20px "微软雅黑" ;
+			}
+			#main{
+				border: 1px solid  red;
+				width: 100%;
+				height: 200px;
+				
+				
+				display: flex;
+				justify-content: center;
+				/* 水平居中 */
+				align-items: center;
+				/* 垂直居中 */
+			}
+			/*
+			1、块级元素中的行内元素居中对齐方式
+				父div 设置text-align: center;
+			2、块级元素中的块内元素居中对齐方式
+			   子div设置 margin:0 auto;
+			3、行内元素的垂直居中吧line-height  和 height设置成一样即可
+			4、水平垂直居中：父元素设置display: table; 
+				子元素设置	display: table-cell;
+				text-align: center;	
+				vertical-align: middle;
+			5、position：absolute；
+				top:50% left50%
+				martop-top:该div宽度的一半
+			5、idv中的汉字垂直居中（例如：<div id="div1"> 2020年 </div>）
+				(1)line-height  和 height设置成一样即可
+				(2)	display: flex;
+					justify-content: center;
+					align-items: center;
+				（3）
+			6、父元素display: -webkit-box;
+			-webkit-box-orient: horizontal;
+			-webkit-box-pack: center;
+			-webkit-box-align: center;子元素水平垂直居中
+					
+					
+					在一个div中,超出内容的部分用三个点表示
+					
+					text-overflow:ellipsis;overflow:hidden;white-space:nowrap;
+			
+			 */
+			#main div{
+				border: 1px solid  green;
+				width: 100px;
+				height: 100px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				/* line-height: 100px; */
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<div id="div1">1</div>
+			<div id="div2">2</div>
+			<div id="div3">3</div>
+		</div>
+	</body>
+</html>

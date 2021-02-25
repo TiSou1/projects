@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<script src="./js/babel.js"></script>
+		<script src="./js/prop-types.js"></script>
+		<script type="text/babel">
+			//const values = ["React","JavaScript"];
+			class LiItem extends React.Component{
+			    constructor(props){
+					super(props);
+					this.handleClick = this.handleClick.bind(this);
+            }
+			//组件第一次存在dom中,函数不会执行
+			//如果已经存在dom中,函数才会被执行
+			shouldComponentUpdate(nextProps,nextstate){
+				//console.log("child-Update");
+				if(nextProps.value!==this.props.value){
+					return true;
+				}
+				return true;
+			}
+			handleClick(){
+				//console.log(this.props.index);
+				this.props.onDeleteClick(this.props.index);
+			}
+			
+				render(){
+				
+					//console.log("child-render");
+					return (
+					    <li onClick={this.handleClick}>{this.props.name+this.props.value}</li>
+					);
+			}
+			
+            }
+			LiItem.propTypes = {
+				value:PropTypes.string,
+				index:PropTypes.number,
+				onDeleteClick:PropTypes.func
+			}
+			LiItem.defaultProps = {
+				name:"Siry"
+			}
+			
+			
+			class App extends React.Component{
+				constructor(props){
+					super(props);
+					this.myref = React.createRef();
+					this.state = {
+						//基础显示内容
+						values:["React","JavaScript"],
+						inputValue:""
+					};
+					this.handleChange = this.handleChange.bind(this);
+					this.addClick = this.addClick.bind(this);
+					this.deleteClick = this.deleteClick.bind(this);
+				}
+			
+				handleChange(e){
+					this.setState({
+						inputValue: this.input.value
+							//将input这个dom绑定到this.input属性上,等价于e.target.value
+					});
+				}
+			
+				addClick(){
+					this.setState({
+						values:[...this.state.values,this.state.inputValue],
+						inputValue:""
+					});
+				}
+				deleteClick(index){
+					//console.log(index);
+					//let values = [].concat(this.state.values);
+					//let value = this.state.value.concat();
+					//let values =this.state.values.slice();
+					let values = [...this.state.values];
+					//values.pop();
+					values.splice(index,1);
+					//console.log(values);
+					//console.log(this.state.values);
+					this.setState({
+						values:values
+					});
+				}
+				
+				render(){
+					//state , props 改变时
+					//console.log("parent-render");
+					return(
+						<React.Fragment>
+						{/*撒打*/}
+						<div>
+							<label htmlFor="input1">添加:</label>
+							<input 
+							id="input1" 
+							value={this.state.inputValue} 
+							onChange={this.handleChange}
+							ref = {(inpu)=>{this.input = inpu;}}
+							/>
+							<button onClick={this.addClick}>添加</button>
+						</div>
+							<ul>
+								{this.state.values.map((value,index)=>{
+									//onClick={(e) => this.deleteRow(id, e)sdsafas
+									//onClick={this.deleteClick.bind(this,index)}
+									//return <li key={value+index} onClick={(e)=>this.deleteClick(index,e)}>{value}</li>;
+									return <LiItem
+											value={value}
+											key={value+index}
+											index={index}
+											onDeleteClick={this.deleteClick}
+									/>;
+								})}
+							</ul>
+						</React.Fragment>
+					);
+				}
+			}
+			//渲染
+			ReactDOM.render(
+			<App />,
+			document.getElementById("root")
+			);
+		</script>
+	</body>
+</html>

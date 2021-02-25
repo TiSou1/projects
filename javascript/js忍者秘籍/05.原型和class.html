@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //es5实现继承
+        // function Person(){}
+        // Person.prototype.dance = function (){};
+
+        // function Ninja(){ }
+        // Ninja.prototype = new Person();
+
+        // Object.defineProperty(Ninja.prototype, "constructor",{
+        //         enumerable: false,
+        //             value: Ninja,
+        //             writable: true,
+        // });
+        /* 我们将一个新的Person实例对象赋值给Ninja.prototype。糟糕的是，这会弄乱constructor属性，
+        所以需要通过Object.defineProperty方法进行手动设置 */
+
+    //es6继承
+    class Person{
+        constructor(name){
+            this.name = name;
+        }
+        dance(){
+            return true;
+        }
+    }
+
+    class Ninja extends Person{
+        constructor(name, weapon){
+            super(name);
+            this.weapon = weapon;
+        }
+        widledWeapen(){
+            return true;
+        }
+    }
+    let person = new Person('Bob');
+    console.log(person instanceof Person);
+    console.log(person.dance());
+    console.log(person.name === 'Bob');
+    console.log(!(person instanceof Ninja))
+    console.log(!('wieldWeapen' in person));
+
+    let ninja = new Ninja('yoshi');
+    console.log(ninja instanceof Ninja);
+    console.log(ninja.widledWeapen());
+    console.log(ninja instanceof Person);
+    console.log(ninja.name === 'yoshi');
+    console.log(ninja.dance());
+
+
+
+    
+    </script>
+</body>
+
+</html>

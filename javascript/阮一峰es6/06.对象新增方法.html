@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        //***************1.Object.is()*************************
+        //ES5 比较两个值是否相等，只有两个运算符：
+        //相等运算符（==）和严格相等运算符（===）。它们都有缺点，前者会自动转换数据类型，
+        //后者的NaN不等于自身，以及+0等于-0。JavaScript 缺乏一种运算，
+        //在所有环境中，只要两个值是一样的，它们就应该相等。
+
+        //Object.is()与(===)基本一致
+        //只有两个区别,1.+0不等于-0 2.NaN等与自身
+        Object.is('foo', 'foo')
+        // true
+        Object.is({}, {})
+        // false
+
+        console.log(+0 === -0, Object.is(+0, -0))
+        console.log(NaN === NaN, Object.is(NaN, NaN))
+
+        //***************2.Object.assign()*************************
+        //用于将两个对象合并Object.assign()方法的第一个参数是目标对象，后面的参数都是源对象。
+        const target1 = { a: 1 }
+        const source1 = { b: 2 }
+        const source2 = { c: 3 }
+        console.log(Object.assign(target1, source1, source2))
+
+
+        const source = {
+            get foo() { return 1 }
+        };
+        const target2 = {}
+        console.log(Object.assign(target2, source))
+        console.log(source.foo)
+
+        //常见用途
+        //1.为对象添加属性
+        class Point {
+            constructor(x, y) {
+                Object.assign(this, { x, y });
+            }
+        }
+
+        //2.为对象添加方法
+        // Object.assign(SomeClass.prototype, {
+        //     someMethod(arg1, arg2) {
+        //         ;
+        //     },
+        //     anotherMethod() {
+        //         ;
+        //     }
+        // });
+
+        // // 等同于下面的写法
+        // SomeClass.prototype.someMethod = function (arg1, arg2) {
+        //     ;
+        // };
+        // SomeClass.prototype.anotherMethod = function () {
+        //     ;
+        // };
+
+        //3.克隆对象
+        function clone(origin) {
+            return Object.assign({}, origin);
+        }
+        //只能克隆原始对象自身的值，不能克隆它继承的值
+        //如果想要保持继承链,以下
+        function clone(origin) {
+            let originProto = Object.getPrototypeOf(origin);
+            return Object.assign(Object.create(originProto), origin);
+        }
+
+
+        //4.合并对个对象
+        const merge = (target, ...sources) => Object.assign({}, ...source)
+
+        //5.为属性指定默认值
+
+
+
+        //***************8__proto__属性，Object.setPrototypeOf()，Object.getPrototypeOf() *****
+        //1.__proto__属性,这只对象的原型
+
+
+        //2.Object.setPrototypeOf(e1,e2)设置e1的原型为e2
+
+        //3.Object.getPrototypeOf(obj)获取对象原型
+
+
+
+
+        //************************5.Object.keys(),Object.values(),Object.entries();
+
+        //1.keys()返回对象的键
+        //2.values()返回对象的值
+        //3.entries()返回键值对
+        //以上均不包含继承属性
+        let obj1 = {
+            name: 'siry',
+            age: 22,
+            grade: '良',
+        }
+        console.log(Object.keys(obj1))
+        console.log(Object.values(obj1))
+        console.log(Object.entries(obj1))
+
+
+        //Object.fromEntries()
+        //是entries()的逆方法,将键值对转换为对象
+       let obj2 =  Object.fromEntries([
+            ['foo', 'bar'],
+            ['baz', 42]
+        ])
+        console.log(obj2)
+    </script>
+</body>
+
+</html>

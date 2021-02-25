@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		
+		<script src="./js/函数.js" async=""></script>
+		<!-- 脚本和 HTML 将一并加载，代码将顺利运行。外部”示例中使用了 JavaScript 的一项现代技术（async “异步”属性）来解决这一问题，
+					它告知浏览器在遇到 <script> 元素时不要中断后续 HTML 内容的加载 -->
+		<!-- 外部”示例中 async 属性可以解决调用顺序问题，因此无需使用 DOMContentLoaded 事件。
+			而 async 只能用于外部脚本，因此不适用于“内部”示例。。z -->
+			<!-- 以前的解决方式时,将及脚本卸载底端(</body>之前,与之相邻),脚本在dom加载完执行 -->
+			<script defer src="js/vendor/jquery.js"></script>
+			
+			<script defer src="js/script2.js"></script>
+			
+			<script defer src="js/script3.js"></script>
+			<!-- 添加defer将会使得按照页面中出现的的顺序加载 -->
+		<script type="text/javascript">
+			// HTML 文档体加载、解释完毕事件
+			document.addEventListener('DOMContentLoaded',()=>{
+				
+			})
+		</script>
+	</body>
+</html>

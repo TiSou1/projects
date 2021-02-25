@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			const person1 = new Object();
+			person1.name = 'chris';
+			person1['age'] = 23;
+			person1.gerrting = ()=>{
+				alert('...');
+			}
+			
+			const person2 = Object.create(person1);
+			console.log(person2);
+			//未定义person2的name属性, 回到原型链中寻找
+			console.log(person2.name);	
+			
+			
+			
+			function doSomething(){}
+			doSomething.prototype.foo = "bar";
+			console.log( doSomething.prototype );
+			// It does not matter how you declare the function, a
+			//  function in javascript will always have a default
+			//  prototype property.
+			var doSomething = function(){};
+			console.log( doSomething.prototype );
+			
+			
+			function callFn () {
+			  let aArg = Array.prototype.slice.call(arguments, 0, 3);
+			  return aArg;
+			}
+			console.log(callFn('1', '2', '3', '4', '5', '6'))
+		</script>
+	</body>
+</html>

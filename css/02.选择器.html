@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			/* 选择ul元素里(作为第一个子元素的li,如果li前面有其他元素则不匹配)第一个li元素 */
+			/* 匹配ul中第一个元素是li的 */
+			
+			/* ul下是li且是第一个元素 */
+			/* ul li:first-child{
+				color: red;
+			} */
+			/* ul下第一个li(li不一定是第一个子元素) */
+		/* 	ul li :first-of-type{}
+			ul :first-child{
+				color: aqua;
+			} */
+			/* 匹配ul中li里第一个元素 */
+		/* 	ul>li:first-of-type{
+				color: chartreuse;
+			} */
+			
+			
+			/*
+			odd匹配下标为偶数的
+			even匹配下表为奇数的
+			从0开始
+			*/
+			/* ul>li:nth-child(odd){
+				color: red;
+			} */
+
+		</style>
+	</head>
+	<body>
+		<ul>
+			<li>1+1<p>ppp</p></li>
+			<li>2+1</li>
+			<li>3+1</li>
+			<li>4+1</li>
+			<li>5+1<p>ppp</p></li>
+		</ul>
+	</body>
+</html>

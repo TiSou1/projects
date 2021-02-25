@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			let par = /^a/;//以a开头 $结尾
+			let str ='asddf'
+			// console.log(str.search(par));
+			console.log(str.match(par));
+			
+			//* 0次或者多次 + 1次或者多次 ?匹配前面0次或者一次
+			let par2 = /e?le?/;
+			console.log('angel'.match(par2));
+			console.log('angle'.match(par2));
+			
+			/*
+				1.贪婪模式(匹配尽量多的字符)
+				2.非贪婪模式(匹配尽量少的字符)
+				在两次* + ? 或者{}的的后面加上?就会开启非贪婪模式
+			*/
+		   let par3 = /\d+/;
+		   let par4 = /\d+?/
+		   console.log('123'.match(par3));//123
+		   console.log('123'.match(par4));//1
+		   
+		   //.会匹配除换行符外的任意单个字符
+		   let par5 = /(foo) (bar) \1 \2/
+		   console.log('foo bar'.replace(par5,'$2, $1'));
+		   
+		   //标志
+		   //g全局搜索,i不区分大小写,m多行搜索,s允许.匹配换行符
+		   let par6 = /\w+\s/g
+		   let str6 = 'fee fi fo fum';
+		   console.log(str6.match(par6));
+ 		</script>
+	</body>
+</html>

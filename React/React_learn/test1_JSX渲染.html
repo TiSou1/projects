@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		
+	</head>
+	<body>
+		<div id="div1"></div>
+		<!-- 16版本 -->
+		<script src="./js/React.js"></script>
+		<script src="./js/React-dom.js"></script>
+		<!-- <script src="https://cdn.bootcss.com/babel-core/5.8.38/browser.js"></script> -->
+		<script src="./js/babel.js"></script>
+		<!-- babel可以将ES6代码转为ES5代码，也可以转换JSX->JS -->
+		<script type="text/babel">
+		   /* const name = 'World';
+			const element = <h1>Hello, {name}</h1>;
+			ReactDOM.render(
+			  element,
+			  document.getElementById('div1')
+			);*/
+			
+			/*
+			1-ES6
+			2-JSX
+			*/
+			function tick(){
+				//jsx 经babel转换
+				const element = (
+				<div>
+					<h1> Hellow,React </h1>
+					<h2> It is {new Date().toLocaleTimeString()} </h2>
+				</div>
+				);
+				ReactDOM.render(element,document.getElementById("div1"));
+			}
+			
+			setInterval(tick,1000); 
+		</script>
+	</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.b1 {
+				width: 200px;
+				height: 200px;
+				background-color: #ff0000;
+			}
+
+			.b2 {
+				width: 100px;
+				height: 100px;
+				background-color: green;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 	<div class="b1">
+			<div class="b2" draggable="true"></div>
+		</div> -->
+		<div style="position: absolute;left: 100px;top: 100px;width: 250px;background-color: wheat;border: solid black;">
+			<div style="background-color: gray;border-bottom: dotted black;padding: 3px;" onmousedown="drag(this.parentNode,event)">
+				拖动我...
+			</div>
+			<p>这是一个测试</p>
+		</div>
+		<script>
+			//事件处理的阶段
+			//1.捕获阶段,从windows->document->body->...->具体元素
+			//2.目标阶段,事件传播到目标节点,
+			//3.事件冒泡,与捕获阶段相反,不添加第三个参数为true,在这个阶段执行回调函数
+			// let b1 = document.querySelector('.b1');
+			// let b2 = document.querySelector('.b2');
+			// b1.addEventListener('click',()=>{
+			// 	console.log('父元素被点击了');
+			// },true);
+			// b2.addEventListener('click',()=>{
+			// 	console.log('子元素被点击了');
+			// })
+			// document.onmousewheel = ()=>{
+			// 	console.log('鼠标滚轮事件');
+			// }
+
+
+			function drag(obj, event) {
+				console.log(obj, event);
+				let startX = event.clientX + window.pageXOffset;
+				let startY = event.clientY + window.pageYOffset;
+
+				//
+				let origX = obj.offsetLeft;
+				let origY = obj.offsetTop;
+
+				//计算距离左上角距离
+				let delaX = startX - origX;
+				let delaY = startY - origY;
+
+				if (document.addEventListener) {
+					document.addEventListener('mousemove', mouveHandler, true);
+					document.addEventListener('mouseup', upHandler, true);
+				}
+
+				if (event.stopPropagation)
+					event.stopPropagation(); //阻止继续传播
+
+				if (event.preventDefault)
+					event.preventDefault(); //阻止默认行为	
+
+
+
+				//定义鼠标移动方法
+				function mouveHandler(e) {
+					if (!e)
+						e = window.event; //IE特殊处理
+					console.log(e.clientX,e.clientY)
+					obj.style.left = (e.clientX + window.pageXOffset - delaX) + 'px';
+					obj.style.top = (e.clientY + window.pageYOffset - delaY) + 'px';
+					if (event.stopPropagation)
+						event.stopPropagation(); //阻止继续传播
+					
+				}
+				
+				//定义
+				function upHandler(e){
+					if (!e)
+						e = window.event; //IE特殊处理
+					if(document.removeEventListener)
+						{
+							document.removeEventListener('mouseup',upHandler,true);
+							document.removeEventListener('mousemove',mouveHandler,true);
+						}
+					if (event.stopPropagation)
+						event.stopPropagation(); //阻止继续传播
+				}
+			}
+		</script>
+	</body>
+</html>

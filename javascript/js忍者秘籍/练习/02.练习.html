@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //1.统计参数和,用剩余参数
+        function sum(...arr) {
+            let sum = 0;
+            for (let n = 0; n < arr.length; n++)
+                sum += arr[n];
+            return sum;
+        }
+        console.log(sum(1, 2, 3, 4))//10
+
+        //2.严格模式下的argumnets
+        function getSam(sam){
+            'use strict';
+            arguments[0] = 'tom';
+            return sam
+        }
+        function getNinja(ninja){
+            arguments[0] = 'fr';
+            return ninja;
+        }
+        console.log(getSam('sam'));//sam
+        console.log(getNinja('ninja'));//fr
+
+
+        //3.this指向
+        function who1(){
+            return this;
+        }
+        function who2(){
+            'use strict';
+            return this;
+        }
+        console.log(who1());//window
+        console.log(who2());//undefine
+
+
+        //4.
+        let ninja1 = {
+            who:function(){
+                return this;
+            }
+        }
+        let ninja2 = {
+            who:ninja1.who,
+        }
+        let identify = ninja2.who;
+        console.log(ninja1.who() === ninja1);//true this指向ninja1
+        console.log(ninja2.who() === ninja1);//false this指向ninja2
+        console.log(identify() === ninja1)//false this指向window
+        console.log(ninja1.who.call(ninja2) === ninja2)//true 绑定该到了ninja2
+
+
+        //5.
+        function Ninja(){
+            this.who = ()=>this
+        }
+        let ninja3 = new Ninja();
+        let ninja4 = {
+            who:ninja3.who,
+        }
+        //箭头函数没有自己的this指向
+        //若将箭头函数换成普通函数,
+        //第二个为true,通过对象的方法调用,this指向该方法所在的对象
+        console.log(ninja3.who() === ninja3);//true
+        console.log(ninja4.who() === ninja4);//false ninja3
+
+        //6.
+        function Ninja2(){
+            this.who = function(){
+                return this;
+            }.bind(this);
+        }
+        let ninja5 = new Ninja2();
+        let ninja6 = {
+            who:ninja5.who
+        }
+        console.log(ninja5.who() === ninja5);//true
+        console.log(ninja6.who() === ninja5);//true
+    </script>
+</body>
+
+</html>

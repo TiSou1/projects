@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link href="./css/weather.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="weather clearfix">
+			<!-- 城市 -->
+			<div class="weather-1">
+				<span class="title">城市:</span>
+				<span class="city"></span>
+			</div>
+			<!-- 温度 -->
+			<div class="weather-2">
+				<span class="title">温度:</span>
+				<span class="tem"></span>
+			</div>
+			<!-- 湿度 -->
+			<div class="weather-3">
+				<span class="title">湿度:</span>
+				<span class="hum"></span>
+			</div>
+			
+			<div class="weather-4">
+				<span class="title">风向:</span>
+				<span class="wind_dir"></span>
+			</div>
+			
+			<div class="weather-5">
+				<span class="title">风力:</span>
+				<span class="wind_sc"></span>
+			</div>
+			
+			<div class="weather-6">
+				<span class="title">风速:</span>
+				<span class="wind_spd"></span>
+			</div>
+			
+		</div>
+		<script src="./js/jQuery.js"></script>
+		<script type="text/javascript">
+			$(document).ready(()=>{
+				//$().ready()   $(()=>{})
+				const city_show = $('.weather-1>span').eq(1);
+				const tmp_show = $('.weather-2>span').eq(1);
+				const hum_show = $('.weather-3>.hum');
+				const url ='https://free-api.heweather.net/s6/weather/now?location=auto_ip	&key=863ec2d34d80454da083d78407df9362';
+				$.get(url,(data,status)=>{
+					const {HeWeather6} = data;
+					const weather = HeWeather6[0];
+					const {basic,now} = weather;//解构赋值
+					console.log(basic,now);
+					const {location} = basic;
+					const {hum,cond_txt,tmp,wind_dir,wind_sc,wind_spd} = now;
+					
+					city_show.html(location);
+					hum_show.html(hum);
+					tmp_show.text(tmp);
+					$('.wind_dir').html(wind_dir);
+					$('.wind_sc').text(wind_sc);
+					$('.wind_spd').html(wind_spd);
+				})
+			});
+		</script>
+	</body>
+</html>
